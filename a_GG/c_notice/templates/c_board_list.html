@@ -28,6 +28,7 @@
                 <tr>
                 <!--scope="col" : 헤더 셀이 어떤 테이블 셀을 명시함 -->
                 <th scope="col">번호</th>
+                <th scope="col">카테고리</th>
                 <th scope="col">제목</th>
                 <th scope="col">작성자</th>
                 <th scope="col">등록날짜</th>
@@ -37,6 +38,7 @@
         {% for board in c_board_list %}
             <tr>
                 <th scope="row">{{ board.id }}</th>
+                <th>{{ board.category}} </th>
                 <th><a id="board-{{board.id}}" href="/notice_board/detail/{{ board.id }}/">{{ board.title }}</a></th>
                 <th>{{ board.writer}} </th>
                 <th>{{ board.register_date|date:'Y-m-d H:i'}}</th>
