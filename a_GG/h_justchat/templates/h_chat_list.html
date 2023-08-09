@@ -1,0 +1,121 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block contents %}
+<div class="top">
+    <div class="home_top">
+        <a href=""><img id = 'home_img' src="{% static 'images/logo.png' %}" alt="로고 이미지"></a>
+    
+    {% if request.session.user %}
+    <div class="logout_align">
+        <a class = "top_menu" href="">마이 페이지</a>
+        <a class = "top_menu" href="logout/">로그아웃</a>
+    </div>
+    {% else %}
+    <div class="login_align">
+        <a class = "top_menu" href="login/">로그인</a>
+        <a class = "top_menu" href="register/">회원가입</a>
+    </div>
+    {% endif%}
+    </div>
+</div>
+<div class='cont'>
+    <ul class="board_main">
+        <li class = "board_title">공지사항
+            <ul class="board_sub">
+                <li><a class="board_name" href="">필독 공지</a></li>
+                <li><a class="board_name" href="">이벤트</a></li>
+            </ul>
+        </li>
+        <li class = "board_title">유저모으기
+            <ul class="board_sub">
+                <li><a class="board_name" href="">2인 게임</a></li>
+                <li><a class="board_name" href="">3~4인 게임</a></li>
+                <li><a class="board_name" href="">5인이상 게임</a></li>
+            </ul>
+        </li>
+        <li class = "board_title">자유 게시판
+            <ul class="board_sub">
+                <li><a class="board_name" href="">잡담</a></li>
+                <li><a class="board_name" href="">질문</a></li>
+            </ul>
+        </li>
+        <li class = "board_title">중고 거래
+            <ul class="board_sub">
+                <li><a class="board_name" href="">삽니다</a></li>
+                <li><a class="board_name" href="">팝니다</a></li>
+            </ul>
+        </li>
+        <li class = "board_title">게임 정보
+            <ul class="board_sub">
+                <li><a class="board_name" href="">게임 소개</a></li>
+                <li><a class="board_name" href="">멀티 하는 방법</a></li>
+            </ul>
+        </li>
+    </ul>
+
+<div class="home_deco">
+    <div class="row mt-5">
+        <div class="col-12 ">
+            <table class="table table-light">
+                <thead class="table-light">
+                    <tr>
+                        <th>번호</th>
+                        <th>제목</th>
+                        <th>내용</th>
+                        <th>작성자</th>
+                        <th>일시</th>
+                    </tr>
+                </thead>
+                {{ chat }}
+                <tbody class="table-light">
+                    {% for chat in chats%}
+                    <tr onclick="location.href='/chat_board/detail/{{chat.id}}/'">
+                        <td>{{chat.id}}</td>
+                        <td>{{chat.h_title}}</td>
+                        <td>{{chat.h_contents}}</td>
+                        <td>{{chat.h_writer}}</td>
+                        <td>{{chat.h_register_date|date:'Y-m-d H:i'}}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <nav>
+                <ul class="pagination justify-content-center">
+                    {% if chats.has_previous%}
+                    <li class="page-item">
+                        <a class="page-link" href="?p={{ chats.previous_page_number }}">이전으로</a>
+                    </li>
+                    {% else %}
+                    <li class="page-item disableed">
+                        <a class="page-link" href="#">이전으로</a>
+                    </li>
+                    {% endif %}
+
+                    <li class="page-item active">
+                        <a class="page-link" href="#">{{chats.number}}/{{chats.paginator.num_pages}}</a>
+                    </li>
+
+                    {% if chats.has_next%}
+                    <li class="page-item">
+                        <a class="page-link" href="?p={{ chats.next_page_number }}">다음으로</a>
+                    </li>
+                    {% else %}
+                    <li class="page-item" disableed>
+                        <a class="page-link" href="#">다음으로</a>
+                    </li>
+                    {% endif %} 
+                </ul>
+            </nav>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <button type="submit" class="btn btn-primary" onclick="location.href = '/chat_board/write/'">글쓰기</button>
+        </div>
+    </div>
+</div>
+{% endblock %}

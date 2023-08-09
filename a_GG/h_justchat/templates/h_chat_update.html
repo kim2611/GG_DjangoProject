@@ -14,15 +14,16 @@
                     {% else %}
                     <input type="{{field.field.widget.input_type}}" class="form-control" 
                     id="{{field.id_for_label}}" placeholder="{{field.label}}" name="{{field.name}}" value="{{ field.value|default_if_none:'' }}"/>
-            {% endif %}
+                    {% endif %}
                 </div>
             {% if field.errors %}
                 <span style="color:red">{{field.errors}}</span>
             {% endif %}
             {% endfor %}
-                <button type="submit" class="btn btn-warning">수정 완료</button>
-                <button type="button" class="btn btn-primary" onclick="location.href='/notice_board/list/'">돌아가기</button>
+                <button type="submit" class="btn btn-primary">수정 완료</button>
+                <button type="button" class="btn btn-primary" onclick="location.href='/board/list/'">돌아가기</button>
     </form>
     </div>
 </div>
 {% endblock %}
+
