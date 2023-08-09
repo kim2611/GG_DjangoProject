@@ -17,7 +17,8 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from bcuser.views import *
-from c_notice.views import *
+from h_justchat.views import *
+#from c_notice.views import *
 
 urlpatterns = [
     path("admin/", admin.site.urls),
@@ -26,5 +27,6 @@ urlpatterns = [
     path('logout/', logout),
     path('register/', RegisterView.as_view()),
     
-    path("notice_board/", include('c_notice.urls')), # 127.0.0.1:8000/notice_board/
+    #path("notice_board/", include('c_notice.urls')), # 127.0.0.1:8000/notice_board/
+    path("chat_board/", include('h_justchat.urls')), # 127.0.0.1:8000/notice_board/
 ]

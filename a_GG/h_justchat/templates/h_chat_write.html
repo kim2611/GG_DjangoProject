@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block contents %}
+<div class="row mt-5">
+    <div class="col-12">
+        <form action="." method="POST">
+            <!-- 암호화된 키 인증 : 암호가 맞지 않으면 요청되지 않음 -->
+            {% csrf_token %}
+            {% for field in form %}
+                <div class="form-group">
+                    <label for="{{field.id_for_label}}">{{field.label}}</label>
+                    {% if field.name == "contents" %}
+                    <textarea class="form-control" name="{{field.name}}"></textarea>
+                    {% else %}
+                    <input type="{{field.field.widget.input_type}}" class="form-control" 
+                    id="{{field.id_for_label}}" placeholder="{{field.label}}" name="{{field.name}}" />
+            {% endif %}
+                </div>
+            {% if field.errors %}
+                <span style="color:red">{{field.errors}}</span>
+            {% endif %}
+            {% endfor %}
+                <button type="submit" class="btn btn-primary">글쓰기</button>
+                <button type="button" class="btn btn-primary" onclick="location.href='/board/list/'">돌아가기</button>
+    </form>
+    </div>
+</div>
+{% endblock %}

@@ -13733,7 +13733,7 @@
 .home_deco{
     width: 1200px;
     height: 860px;
-    background: url('/static/images/logo.png') no-repeat center center; /* 이미지 경로 및 배경 설정 */
+    background: url('./logo.png') no-repeat center center; /* 이미지 경로 및 배경 설정 */
     background-size: cover; /* 이미지 크기 조절 */
 }
 .container{
@@ -13755,12 +13755,12 @@
 .board_title{
     font-size: 30px;
 }
-.board_title:before{
+.board_title::before{
     content: '';
     display: inline-block;
     width: 30px; /* 이미지 너비 */
     height: 30px; /* 이미지 높이 */
-    background:  url("/static/images/logo.png") no-repeat; /* 이미지 경로 */
+    background: url("..\..\media\logo.PNG") no-repeat; /* 이미지 경로 */
     background-size: cover;
     margin-right: 10px; /* 아이콘과 텍스트 사이 간격 */
 }
@@ -13778,10 +13778,4 @@
 }
 .cont{
     background: center center;
-}
-body {
-    display: flex;
-    justify-content: center; /* 수평 가운데 정렬 */
-    height: 100vh; /* 뷰포트 높이를 100%로 설정하여 가운데 정렬 */
-    margin: 0; /* body의 기본 마진 제거 */
 }
