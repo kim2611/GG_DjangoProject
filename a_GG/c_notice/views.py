@@ -44,15 +44,13 @@ def c_board_write(request):
         if form.is_valid(): # 폼의 데이터가 유효한 정보인지 여부
             user_id = request.session.get("user") # 세션에서 로그인한 아이디 확보
             bcuser = Bcuser.objects.get(pk=user_id) # 실제 데이터 베이스에서 로그인한 id 가져오기
-
             # tags = form.cleaned_data["tags"].split(",")
 
-            board = c_Board() # 게시판의 객체 생성 : 유효성 검사가 통과된 데이터를 저장하기 위함
-            board.title = form.cleaned_data["title"]
-            board.contents = form.cleaned_data["contents"]
+            board = form.save(commit=False) # 게시판의 객체 생성 : 유효성 검사가 통과된 데이터를 저장하기 위함
+            # board.title = form.cleaned_data["title"]
+            # board.contents = form.cleaned_data["contents"]
             board.writer = bcuser # 로그인한 id 데이터베이스에 저장
             board.save()
-
         # for tag in tags:
         #     if not tag: # 태그가 없을면 통과
         #         continue

@@ -17,7 +17,7 @@ class c_BoardForm(forms.Form):
             'required': '내용을 입력해주세요'
         },
         widget=forms.Textarea, label='내용'
-        )
+    )
     
     
     def clean(self):
