@@ -25,17 +25,17 @@ def board_write(request):
         form = h_ChatForm(request.POST)
         print(request.POST) 
         if form.is_valid():  # 폼이 유효한지(ok 빈값일때 에러메시지 확인)
-            user_id = request.session.get('user')  # 세션에서 로그인한 아이디 확보
+            #user_id = request.session.get('user')  # 세션에서 로그인한 아이디 확보
             # 실제 데이터 베이스에서 로그인한 id 가져오기
-            bcuser = form.data.get('email')
+            #bcuser = form.data.get('email')
 
             chat = h_Chat()  # 게시판의 객체 생성 : 유효성 검사가 통과된 데이터를 저장하기 위함
             chat.h_title = form.cleaned_data['title']
             chat.h_contents = form.cleaned_data['contents']
-            chat.h_writer = bcuser  # 로그인한 id 데이터베이스에 저장
+            chat.h_writer = Bcuser.objects.get(email=request.session.get('user')) # 로그인한 id 데이터베이스에 저장
             chat.save()
 
-            return redirect('/board/list/')
+            return redirect('/')
     else:
         form = h_ChatForm()  # 접속은 했으나 유효성 검사를 안했으므로 다시 유효성 검사부터 진행
     # 실패시 처음으로 돌아가서 다시해봐
