@@ -69,7 +69,7 @@
                 {{ chat }}
                 <tbody class="table-light">
                     {% for chat in chats%}
-                    <tr onclick="location.href='/chat_board/detail/{{chat.id}}/'">
+                    <tr onclick="location.href='/chat_board/{{chat.id}}/'">
                         <td>{{chat.id}}</td>
                         <td>{{chat.h_title}}</td>
                         <td>{{chat.h_contents}}</td>

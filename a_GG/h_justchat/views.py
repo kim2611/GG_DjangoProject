@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.http import Http404
+from django.views.generic import ListView, DetailView
 from .models import h_Chat
 from .forms import h_ChatForm
 from bcuser.models import Bcuser
@@ -10,7 +11,7 @@ from django.core.paginator import Paginator
 def chat_list(request):
     all_chats = h_Chat.objects.all().order_by("-id")
     page = int(request.GET.get('p', 1))  # 초기에 페이지는 1로 시작
-    paginator = Paginator(all_chats, 5)  # 전체 글을 가져와서 4개씩 나누어 보여줌
+    paginator = Paginator(all_chats, 10)  # 전체 글을 가져와서 4개씩 나누어 보여줌
 
     chats = paginator.get_page(page)
     return render(request, 'h_chat_list.html', {'chats': chats})
@@ -42,13 +43,13 @@ def board_write(request):
     return render(request, 'h_chat_write.html', {'form': form})
 
 
-# def board_detail(request, pk):
-#     try:
-#         board = Board.objects.get(pk=pk)
-#     except Board.DoesNotExist:  # 게시글이 없을때 다음 메시지를 띄움
-#         raise Http404('게시글을 찾을 수 없습니다.')
+def board_detail(request, pk):
+    try:
+        chat = h_Chat.objects.get(pk=pk)
+    except h_Chat.DoesNotExist:  # 게시글이 없을때 다음 메시지를 띄움
+        raise Http404('게시글을 찾을 수 없습니다.')
 
-#     return render(request, 'board_detail.html', {'board': board})
+    return render(request, 'h_chat_detail.html', {'chat': chat})
 
 # def board_update(request, pk):
 #     if not request.session.get('user'):
