@@ -4,6 +4,12 @@ from django.utils import timezone
 class h_Chat(models.Model):
     h_writer = models.ForeignKey(
         'bcuser.Bcuser', on_delete=models.CASCADE, verbose_name='작성자')
+    h_category = models.CharField(max_length=64, default='news', verbose_name='카테고리',
+            choices=(
+            ('news', '소식'),
+            ('friendship', '친목'),
+            ('etc', '기타')
+            ))
     h_title = models.CharField(max_length=128, verbose_name='제목')
     h_contents = models.TextField(verbose_name='내용')
     h_register_date=models.DateTimeField(default=timezone.now, verbose_name='등록날짜')

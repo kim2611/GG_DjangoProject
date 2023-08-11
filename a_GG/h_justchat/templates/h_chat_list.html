@@ -8,12 +8,12 @@
     {% if request.session.user %}
     <div class="logout_align">
         <a class = "top_menu" href="">마이 페이지</a>
-        <a class = "top_menu" href="logout/">로그아웃</a>
+        <a class = "top_menu" href="../logout/">로그아웃</a>
     </div>
     {% else %}
     <div class="login_align">
-        <a class = "top_menu" href="login/">로그인</a>
-        <a class = "top_menu" href="register/">회원가입</a>
+        <a class = "top_menu" href="../login">로그인</a>
+        <a class = "top_menu" href="../register/">회원가입</a>
     </div>
     {% endif%}
     </div>
@@ -61,22 +61,34 @@
                     <tr>
                         <th>번호</th>
                         <th>제목</th>
-                        <th>내용</th>
                         <th>작성자</th>
                         <th>일시</th>
                     </tr>
                 </thead>
-                {{ chat }}
+
+                <!-- 쿼리 결과 뱉는 결과물 어떻게 고칠지 너무 기대된당!-->
+                <!-- 대충 로직은 쿼리에 대한 요청인자? 요청T/F True면 all_chats를 보여주고, 아닐경우 원래 전체글을 보여주는 로직 추가  -->
+                
                 <tbody class="table-light">
-                    {% for chat in chats%}
-                    <tr onclick="location.href='/chat_board/{{chat.id}}/'">
-                        <td>{{chat.id}}</td>
-                        <td>{{chat.h_title}}</td>
-                        <td>{{chat.h_contents}}</td>
-                        <td>{{chat.h_writer}}</td>
-                        <td>{{chat.h_register_date|date:'Y-m-d H:i'}}</td>
-                    </tr>
-                    {% endfor %}
+                    {%if all_chats %}
+                        {% for chat in all_chats%}
+                        <tr onclick="location.href='/chat_board/{{chat.id}}/'">
+                            <td>{{chat.id}}</td>
+                            <td>[{{chat.get_h_category_display}}]  {{chat.h_title}}</td>
+                            <td>{{chat.h_writer}}</td>
+                            <td>{{chat.h_register_date|date:'Y-m-d H:i'}}</td>
+                        </tr>
+                        {% endfor %}
+                    {%else%}
+                        {% for chat in chats%}
+                        <tr onclick="location.href='/chat_board/{{chat.id}}/'">
+                            <td>{{chat.id}}</td>
+                            <td>[{{chat.get_h_category_display}}]  {{chat.h_title}}</td>
+                            <td>{{chat.h_writer}}</td>
+                            <td>{{chat.h_register_date|date:'Y-m-d H:i'}}</td>
+                        </tr>
+                        {% endfor %}
+                    {% endif %}
                 </tbody>
             </table>
         </div>
@@ -84,6 +96,7 @@
     <div class="row">
         <div class="col-12">
             <nav>
+
                 <ul class="pagination justify-content-center">
                     {% if chats.has_previous%}
                     <li class="page-item">
@@ -109,13 +122,22 @@
                     </li>
                     {% endif %} 
                 </ul>
+                <form method="GET" action="" class="form-search">
+                    {{ form.search_query.label_tag }}
+                    {{ form.search_query }}
+                    <button type="submit" class="btn btn-primary">검색</button>
+                </form>
+                <div class="row">
+                    <div class="col-12">
+                        <button type="submit" class="btn btn-primary" onclick="location.href = '/chat_board/write/'">글쓰기</button>
+
+
+                        <!-- 이걸 가지고서 table로 출력하게끔 하면 될듯? -->
+                    </div>
+                </div>
             </nav>
         </div>
     </div>
-    <div class="row">
-        <div class="col-12">
-            <button type="submit" class="btn btn-primary" onclick="location.href = '/chat_board/write/'">글쓰기</button>
-        </div>
-    </div>
+    <!-- 검색 폼 추가 -->
 </div>
 {% endblock %}

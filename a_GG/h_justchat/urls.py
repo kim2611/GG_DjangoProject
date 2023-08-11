@@ -5,5 +5,6 @@ from . import views
 urlpatterns = [
     path('', views.chat_list, name="chat_board_list" ),
     path('write/', views.board_write, name="chat_write_list"),
-    path('<int:pk>/',views.board_detail, name="chat_board_detail")] 
-    
+    path('<int:pk>/',views.board_detail, name="chat_board_detail"), 
+    path('<int:pk>/delete/',views.board_delete, name="chat_board_delete"),
+    path('<int:pk>/update/',views.board_update, name="chat_board_update")] 
