@@ -1,0 +1,160 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block contents %}
+
+<div class="top">
+    <div class="home_top">
+        <a href=""><img id = 'home_img' src="{% static 'images/logo.png' %}" alt="로고 이미지"></a>
+    
+    {% if request.session.user %}
+    <div class="logout_align">  
+        <span class="badge bg-dark">
+            <a class = "top_menu" href="">마이 페이지</a>
+        </span>
+        <span class="badge bg-dark">
+            <a class = "top_menu" href="logout/">로그아웃</a>
+        </span>
+    </div>
+    {% else %}
+    <div class="login_align">
+        <span class="badge bg-dark">
+            <a class = "top_menu" href="login/">로그인</a>
+        </span>
+        <span class="badge bg-dark">
+            <a class = "top_menu" href="register/">회원가입</a>
+        </span>
+        </div>
+    {% endif%}
+    </div>
+</div>
+<div class='flex-container'>
+    <div class="list-side">
+        <ul class="list-group">
+            <li class = "list-group-item list-group-item-light d-flex justify-content-between align-items-center">공지사항
+                <ul class="list-group sub-menu">
+                    <li><a class="list-group-item list-group-item-action sub-size" href="">필독 공지</a></li>
+                    <li><a class="list-group-item list-group-item-action sub-size" href="">이벤트</a></li>
+                </ul>
+            </li>
+            <li class = "list-group-item list-group-item-primary d-flex justify-content-between align-items-center">유저모으기
+                <ul class="list-group sub-menu">
+                    <li><a class="list-group-item list-group-item-action sub-size" href="">2인 게임</a></li>
+                    <li><a class="list-group-item list-group-item-action sub-size" href="">3~4인 게임</a></li>
+                    <li><a class="list-group-item list-group-item-action sub-size" href="">5인이상 게임</a></li>
+                </ul>
+            </li>
+            <li class = "list-group-item list-group-item-primary d-flex justify-content-between align-items-center">자유게시판
+                <ul class="list-group sub-menu">
+                    <li><a class="list-group-item list-group-item-action sub-size" href="chat_board">잡담</a></li>
+                    <li><a class="list-group-item list-group-item-action sub-size" href="">질문</a></li>
+                </ul>
+            </li>
+            <li class = "list-group-item list-group-item-primary d-flex justify-content-between align-items-center">중고 거래
+                <ul class="list-group sub-menu">
+                    <li><a class="list-group-item list-group-item-action sub-size" href="">삽니다</a></li>
+                    <li><a class="list-group-item list-group-item-action sub-size" href="">팝니다</a></li>
+                </ul>
+            </li>
+            <li class = "list-group-item list-group-item-primary d-flex justify-content-between align-items-center">게임 정보
+                <ul class="list-group sub-menu">
+                    <li><a class="list-group-item list-group-item-action sub-size" href="">게임 소개</a></li>
+                    <li><a class="list-group-item list-group-item-action sub-size" href="">멀티 하는 방법</a></li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+
+    {% comment %} ---------------------게시판 별 동일------------------- {% endcomment %}
+    <div class="home-deco">
+        <div class='home-board'>
+            
+            <table class="table table-light">
+                <thead class="table-light">
+                    <tr>
+                        <th colspan="4">
+                            공지+소식 게시판
+                        </th>
+                    </tr>
+                </thead>
+                
+                <tbody>
+                    <tr>
+                        <td>카테고리</td>
+                        <td>제목</td>
+                        <td>조회수</td>
+                        <td>일자</td>
+                    </tr>
+                    {% comment %} {% for chat in all_chats%}
+                    <tr onclick="location.href='/chat_board/{{chat.id}}/'">
+                        <td>{{chat.get_h_category_display}}</td>
+                        <td class="table-title">{{chat.h_title}}</td>
+                        <td>{{chat.h_click}}</td>
+                        <td>{{chat.h_register_date|date:'m-d'}}</td>
+                    </tr>
+                    {% endfor %} {% endcomment %}
+                </tbody>
+            </table>
+        </div>
+        <div class='home-board'>
+            <table class="table table-light">
+                <thead class="table-light">
+                    <tr>
+                        <th colspan="4">
+                            자유 판매 게시판
+                        </th>
+                    </tr>
+                </thead>
+                
+                <tbody>
+                    <tr>
+                        <td>카테고리</td>
+                        <td>제목</td>
+                        <td>조회수</td>
+                        <td>일자</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class='home-board'>
+            <table class="table table-light">
+                <thead class="table-light">
+                    <tr>
+                        <th colspan="4">
+                            유저모으기 게시판
+                        </th>
+                    </tr>
+                </thead>
+                
+                <tbody>
+                    <tr>
+                        <td>카테고리</td>
+                        <td>제목</td>
+                        <td>조회수</td>
+                        <td>일자</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class='home-board'>
+            <table class="table table-light">
+                <thead class="table-light">
+                    <tr>
+                        <th colspan="4">
+                            상품 판매 게시판
+                        </th>
+                    </tr>
+                </thead>
+                
+                <tbody>
+                    <tr>
+                        <td>카테고리</td>
+                        <td>제목</td>
+                        <td>조회수</td>
+                        <td>일자</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

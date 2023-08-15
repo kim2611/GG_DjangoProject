@@ -1,0 +1,91 @@
+ss{% extends 'base.html' %}
+{% load static %}
+{% block header %}
+<style>
+        .container {
+            display: flex;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+            width: 80%;
+            max-width: 1200px;
+        }
+        .left-section {
+            border-right: 1px solid #ccc;
+            padding: 20px;
+            width: 30%;
+        }
+        .right-section {
+            padding: 20px;
+            width: 70%;
+        }
+        .section {
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 10px;
+            margin-bottom: 20px;
+        }
+        .username {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .section-title {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+</style>
+{% endblock %}
+
+{% block contents %}
+<div class="top">
+    <div class="home_top">
+        <a href=""><img id='home_img' src="{% static 'images/logo.png' %}" alt="로고 이미지"></a>
+
+        {% if request.session.user %}
+        <div class="logout_align">
+            <span class="badge bg-dark">
+                <a class="top_menu" href="">마이 페이지</a>
+            </span>
+            <span class="badge bg-dark">
+                <a class="top_menu" href="../logout/">로그아웃</a>
+            </span>
+        </div>
+        {% else %}
+        <div class="login_align">
+            <span class="badge bg-dark">
+                <a class="top_menu" href="../login/">로그인</a>
+            </span>
+            <span class="badge bg-dark">
+                <a class="top_menu" href="../register/">회원가입</a>
+            </span>
+        </div>
+        {% endif%}
+    </div>
+</div>
+<div class="container">
+    <div class="left-section">
+        <div class="section">
+            <div class="username">사용자명</div>
+        </div>
+        <div class="section">
+            <div class="section-title"><a class="" href="">관심 있는 게임 목록</a></div>
+        </div>
+        <div class="section">
+            <div class="section-title"><a class="" href="">게시글 목록</a></div>
+        </div>
+        <div class="section">
+            <div class="section-title"><a class="" href="">나의 스케줄</a></div>
+        </div>
+        <div class="section">
+            <div class="section-title"><a class="" href="">수정하기</a></div>
+        </div>
+    </div>
+
+    <div class="right-section">
+        <!-- 오른쪽 섹션은 마이페이지의 내용이 뜨는 공간 // 처음에 마이페이지 들어왔을때 
+            뜨는 기본내용은 (스케줄)-->
+    </div>
+</div>
+{% endblock %}
