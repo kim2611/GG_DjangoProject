@@ -29,6 +29,7 @@ urlpatterns = [
     
     #path("notice_board/", include('c_notice.urls')), # 127.0.0.1:8000/notice_board/
     path("chat_board/", include('h_justchat.urls')), # 127.0.0.1:8000/notice_board/
-    path("", include('j_buyboard.urls')),
+    path("", include('k_sellboard.urls')),
     path("", include('n_order.urls')),
+    path("qna_board/", include('i_qna.urls')),
 ]

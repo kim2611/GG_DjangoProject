@@ -1,16 +1,16 @@
 from django.db import models
-from j_buyboard.models import Product
 
 class Order(models.Model):
-    bcuser = models.ForeignKey('bcuser.Bcuser', on_delete=models.CASCADE, verbose_name='사용자')
-    product = models.ForeignKey(Product, on_delete=models.CASCADE, verbose_name='상품') 
-    quantity = models.IntegerField(verbose_name='수량')
-    register_date = models.DateTimeField(auto_now_add=True, verbose_name='주문날짜')
+    bcuser=models.ForeignKey('bcuser.Bcuser', on_delete=models.CASCADE, verbose_name='사용자')
+    product=models.ForeignKey('k_sellboard.Product', on_delete=models.CASCADE, verbose_name='상품')
+    quantity=models.IntegerField(verbose_name='수량')
+    register_date=models.DateTimeField(auto_now_add=True, verbose_name='주문날짜')
+
 
     def __str__(self):
-        return str(self.bcuser) + ' ' + str(self.product)
-
+        return str(self.bcuser)+''+str(self.product)
+    
     class Meta:
-        db_table = 'bootcampus_order'
-        verbose_name = '주문'
-        verbose_name_plural = '주문들'  
+        db_table='bootcampus_order'
+        verbose_name='주문'
+        verbose_name_plural='주문들'

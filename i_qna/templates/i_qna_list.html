@@ -1,0 +1,171 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block contents %}
+
+<div class="top">
+    <div class="home_top">
+        <a href="../"><img id='home_img' src="{% static 'images/logo.png' %}" alt="로고 이미지"></a>
+
+        {% if request.session.user %}
+        <div class="logout_align">
+            <span class="badge bg-dark">
+                <a class="top_menu" href="">마이 페이지</a>
+            </span>
+            <span class="badge bg-dark">
+                <a class="top_menu" href="../logout/">로그아웃</a>
+            </span>
+        </div>
+        {% else %}
+        <div class="login_align">
+            <span class="badge bg-dark">
+                <a class="top_menu" href="../login/">로그인</a>
+            </span>
+            <span class="badge bg-dark">
+                <a class="top_menu" href="../register/">회원가입</a>
+            </span>
+        </div>
+        {% endif%}
+    </div>
+</div>
+<div class='flex-container'>
+    <div class="list-side">
+        <ul class="list-group">
+            <li class="list-group-item list-group-item-light d-flex justify-content-between align-items-center">공지사항
+                <ul class="list-group sub-menu">
+                    <li><a class="list-group-item list-group-item-action sub-size" href="">필독 공지</a></li>
+                    <li><a class="list-group-item list-group-item-action sub-size" href="">이벤트</a></li>
+                </ul>
+            </li>
+            <li class="list-group-item list-group-item-primary d-flex justify-content-between align-items-center">유저모으기
+                <ul class="list-group sub-menu">
+                    <li><a class="list-group-item list-group-item-action sub-size" href="">2인 게임</a></li>
+                    <li><a class="list-group-item list-group-item-action sub-size" href="">3~4인 게임</a></li>
+                    <li><a class="list-group-item list-group-item-action sub-size" href="">5인이상 게임</a></li>
+                </ul>
+            </li>
+            <li class="list-group-item list-group-item-primary d-flex justify-content-between align-items-center">자유게시판
+                <ul class="list-group sub-menu">
+                    <li><a class="list-group-item list-group-item-action sub-size" href="/chat_board/">잡담</a></li>
+                    <li><a class="list-group-item list-group-item-action sub-size" href="/qna_board/">질문</a></li>
+                </ul>
+            </li>
+            <li class="list-group-item list-group-item-primary d-flex justify-content-between align-items-center">중고 거래
+                <ul class="list-group sub-menu">
+                    <li><a class="list-group-item list-group-item-action sub-size" href="">삽니다</a></li>
+                    <li><a class="list-group-item list-group-item-action sub-size" href="">팝니다</a></li>
+                </ul>
+            </li>
+            <li class="list-group-item list-group-item-primary d-flex justify-content-between align-items-center">게임 정보
+                <ul class="list-group sub-menu">
+                    <li><a class="list-group-item list-group-item-action sub-size" href="">게임 소개</a></li>
+                    <li><a class="list-group-item list-group-item-action sub-size" href="">멀티 하는 방법</a></li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+
+    <div class="home_deco chat-board">
+        <div class="chat-list">
+            <div class="col-12 d-flex justify-content-between align-items-center">
+                <div class="btn-group" role="group">
+                    <a href="?category=" class="btn btn-secondary">전체</a>
+                    <a href="?category=일반질문" class="btn btn-secondary">일반질문</a>
+                    <a href="?category=게임질문" class="btn btn-secondary">게임질문</a>
+                    <a href="?category=시세정보" class="btn btn-secondary">시세정보</a>
+                </div>
+                <button type="submit" class="btn btn-primary write-btn" onclick="location.href = '/qna_board/write/'">글쓰기</button>
+                
+                
+            </div>
+            <div>
+                <table class="table table-light">
+                    <thead class="table-light">
+                        <tr>
+                            <th>번호</th>
+                            <th>카테고리</th>
+                            <th>제목</th>
+                            <th>작성자</th>
+                            <th>조회수</th>
+                            <th>추천수</th>
+                            <th>일시</th>
+                        </tr>
+                    </thead>
+                
+                    <!-- 쿼리 결과 뱉는 결과물 어떻게 고칠지 너무 기대된당!-->
+                    <!-- 대충 로직은 쿼리에 대한 요청인자? 요청T/F True면 all_chats를 보여주고, 아닐경우 원래 전체글을 보여주는 로직 추가  -->
+                    
+                    <tbody class="table-light">
+                        {%if all_qnas %}
+                            {% for qna in all_qnas%}
+                            <tr onclick="location.href='/qna_board/{{qna.id}}/'">
+                                <td>{{qna.id}}</td>
+                                <td>{{qna.get_i_category_display}}</td>
+                                <td class="table-title">{{qna.i_title}}</td>
+                                <td><a href="">{{qna.i_writer.nickname}}</a></td>
+                                <td>{{qna.i_click}}</td>
+                                <td>{{qna.i_votes}}</td>
+                                <td>{{qna.i_register_date|date:'Y-m-d H:i'}}</td>
+                            </tr>
+                            {% endfor %}
+                            {%else%}
+                            {% for qna in qnas%}
+                            <tr onclick="location.href='/qna_board/{{qna.id}}/'">
+                                <td>{{qna.id}}</td>
+                                <td>{{qna.get_i_category_display}}</td>
+                                <td class="table-title">{{qna.i_title}}</td>
+                                <td><a href="">{{qna.i_writer.nickname}}</td>
+                                <td>{{qna.i_click}}</td>
+                                <td>{{qna.i_votes}}</td>
+                                <td>{{qna.i_register_date|date:'Y-m-d H:i'}}</td>
+                            </tr>
+                            {% endfor %}
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <nav>
+                
+                    <ul class="pagination justify-content-center">
+                        {% if qnas.has_previous %}
+                        <li class="page-item">
+                            <a class="page-link" href="?p={{ qnas.previous_page_number }}{% if form.cleaned_data.search_query %}&search_query={{ form.cleaned_data.search_query }}{% endif %}{% if request.GET.category %}&category={{ request.GET.category }}{% endif %}">이전으로</a>
+                        </li>
+                        {% else %}
+                        <li class="page-item disabled">
+                            <a class="page-link" href="#">이전으로</a>
+                        </li>
+                        {% endif %}
+        
+                        <li class="page-item active">
+                            <a class="page-link" href="#">{{ qnas.number }}/{{ qnas.paginator.num_pages }}</a>
+                        </li>
+        
+                        {% if qnas.has_next %}
+                        <li class="page-item">
+                            <a class="page-link" href="?p={{ qnas.next_page_number }}{% if form.cleaned_data.search_query %}&search_query={{ form.cleaned_data.search_query }}{% endif %}{% if request.GET.category %}&category={{ request.GET.category }}{% endif %}">다음으로</a>
+                        </li>
+                        {% else %}
+                        <li class="page-item disabled">
+                            <a class="page-link" href="#">다음으로</a>
+                        </li>
+                        {% endif %}
+                    </ul>
+                    <div class="bottom-group">
+
+                        <form method="GET" action="" class="form-search">
+                            {{ form.search_query.label_tag }}
+                            {{ form.search_query }}
+                            <input type="hidden" name="category" value="{{ request.GET.category }}">
+                            <button type="submit" class="btn btn-primary">검색</button>
+                        </form>
+                        </form>
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

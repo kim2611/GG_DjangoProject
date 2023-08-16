@@ -6,6 +6,9 @@ from .forms import *
 from bcuser.models import Bcuser
 from django.core.paginator import Paginator
 from django.db import models
+from django.views.generic.edit import FormView
+from django.utils.decorators import method_decorator
+from bcuser.decorators import login_required
 # Create your views here.
 
 # def chat_list(request):
@@ -18,7 +21,7 @@ from django.db import models
 
 
 #     return render(request, 'h_chat_list.html', {'chats': chats})
-def chat_list(request):
+def board_list(request):
     category_filter = request.GET.get('category')
     search_query = request.GET.get('search_query')
 
@@ -71,6 +74,8 @@ def board_write(request):
 
 
 def board_delete(request, pk):
+    if not request.session.get('user'):
+        return redirect('/login/')
     chat = get_object_or_404(h_Chat, pk=pk)
 
     # 로그인한 사용자와 채팅 메시지 작성자가 같은지 확인
@@ -82,6 +87,8 @@ def board_delete(request, pk):
     
 #######################
 def comment_delete(request,pk):
+    if not request.session.get('user'):
+        return redirect('/login/')
     comment = get_object_or_404(h_Comment, pk=pk)
     if comment.author == Bcuser.objects.get(email=request.session.get('user')):
         chat_pk = comment.post.pk  # 코멘트가 속한 게시글의 pk 가져오기
@@ -90,7 +97,10 @@ def comment_delete(request,pk):
     else:
         raise Http404('권한이 없습니다')
     
+
 def board_vote(request, pk):
+    if not request.session.get('user'):
+        return redirect('/login/')
     chat = h_Chat.objects.get(pk=pk)
     user = Bcuser.objects.get(email=request.session.get('user')) # 현재 로그인한 사용자
     
@@ -107,42 +117,62 @@ def board_vote(request, pk):
     chat.save()
     return redirect('chat_board_detail', pk=chat.pk)
 
-def board_detail(request, pk):
-    try:
-        chat = h_Chat.objects.get(pk=pk)
-    except h_Chat.DoesNotExist:
-        raise Http404('게시글을 찾을 수 없습니다.')
-    
-    chat.h_click += 1
-    chat.save()
-    
-        # 중복 추천 확인
-    user = Bcuser.objects.get(email=request.session.get('user'))
-    is_upvoted = user in chat.h_voters.all()
-    
-    
-    ########################댓글 구성 구분########################################
-    comments = h_Comment.objects.filter(post=chat)
-    
-    
-    if request.method == 'POST':
-        comment_form = CommentForm(request.POST)
-        if comment_form.is_valid():
-            new_comment = comment_form.save(commit=False)
-            new_comment.post = chat
-            new_comment.author = Bcuser.objects.get(email=request.session.get('user'))
-            new_comment.save()
-            return redirect('chat_board_detail', pk=chat.pk)
-    else:
-        comment_form = CommentForm()
 
-    context = {
-    'chat': chat,
-    'comment_form': comment_form,
-    'comments': comments,
-    'is_upvoted': is_upvoted,  
-    }
-    return render(request, 'h_chat_detail.html', context)
+class Board_detail(FormView):
+    template_name = 'h_chat_detail.html'
+
+
+    def get(self, request, pk):
+        try:
+            chat = h_Chat.objects.get(pk=pk)
+        except h_Chat.DoesNotExist:
+            raise Http404('게시글을 찾을 수 없습니다.')
+        
+        chat.h_click += 1
+        chat.save()
+        
+        is_upvoted = False  # 기본값으로 초기화
+        
+        try:
+            user = Bcuser.objects.get(email=request.session.get('user'))
+            is_upvoted = user in chat.h_voters.all()
+        except Bcuser.DoesNotExist:
+            pass
+
+        comments = h_Comment.objects.filter(post=chat)
+        comment_form = CommentForm()
+        
+        context = {
+            'chat': chat,
+            'comment_form': comment_form,
+            'comments': comments,
+            'is_upvoted': is_upvoted,
+        }
+        
+        return render(request, self.template_name, context)
+
+    def post(self, request, pk):
+        if not request.session.get('user'):
+            return redirect('/login/')
+        chat = h_Chat.objects.get(pk=pk)
+        
+        if request.method == 'POST':
+            comment_form = CommentForm(request.POST)
+            if comment_form.is_valid():
+                new_comment = comment_form.save(commit=False)
+                new_comment.post = chat
+                new_comment.author = Bcuser.objects.get(email=request.session.get('user'))
+                new_comment.save()
+                return redirect('chat_board_detail', pk=chat.pk)
+        else:
+            comment_form = CommentForm()
+
+        context = {
+            'chat': chat,
+            'comment_form': comment_form,
+        }
+        
+        return render(request, self.template_name, context)
 
 
 
@@ -163,6 +193,7 @@ def board_update(request, pk):
             chat.h_title = form.cleaned_data['title']
             chat.h_contents = form.cleaned_data['contents']
             chat.h_writer = Bcuser.objects.get(email=request.session.get('user'))
+            chat.h_nickname = Bcuser.objects.get(nickname=request.session.get('user'))
             chat.save()
             return redirect('/chat_board/')
     else:

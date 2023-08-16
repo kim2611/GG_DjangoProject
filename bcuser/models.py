@@ -5,6 +5,7 @@ from django.db import models
 class Bcuser(models.Model) :
     email = models.EmailField(verbose_name='이메일')
     password = models.CharField(max_length=128, verbose_name='비밀번호')
+    nickname = models.CharField(max_length=64, verbose_name='닉네임')
     # 사용자의 등급을 저장하는 데 사용 -> 선택 가능한 값은 'admin'과 'user'
     level = models.CharField(max_length=8, verbose_name='등급',
                 choices=(

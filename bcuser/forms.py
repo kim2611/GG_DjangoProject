@@ -11,6 +11,10 @@ class RegisterForm(forms.Form):
         error_messages={'required' : '비밀번호를 입력해주세요.'},
         widget=forms.PasswordInput, label='비밀번호'
     )
+    nickname = forms.CharField(
+        error_messages={'required' : '닉네임을 입력해주세요.'},
+        widget=forms.PasswordInput, label='닉네임'
+    )
     re_password = forms.CharField(
         error_messages={'required' : '비밀번호를 입력해주세요.'},
         widget=forms.PasswordInput, label='비밀번호'
@@ -21,6 +25,7 @@ class RegisterForm(forms.Form):
         email=cleaned_data.get('email')
         password=cleaned_data.get('password')
         re_password=cleaned_data.get('re_password')
+        nickname=cleaned_data.get('nickname')
         
         #password, re_password가 있다면
         #password와 re_password비번이 일치하지 않을경우 

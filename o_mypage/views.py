@@ -1,18 +1,36 @@
-from django.shortcuts import render
-from django.views import View
-# from l_info.models import /예시로 Info 사용/ 게임정보 게시판에서 찜 누르면, 그게 마이페이지로 넘어와야하니
-# l_info에서 models 만들고 받아오기.
-
-class MypageGame(View):
-    pass
-    # def get(self, request, *args, **kwargs):
-        # games = Info.objects.all() # Info 만들고 주석 제거
-        # return render(request, 'game_list.html', {'games': games})
+from django.shortcuts import render, redirect
+from django.http import Http404
+# from .models import Board
+# from .forms import BoardForm
+from bcuser.models import Bcuser
+from django.core.paginator import Paginator
+# from tag.models import Tag
 
 
+# def board_list(request):
+#     all_boards=Board.objects.all().order_by("-id")
+#     page=int(request.GET.get('p',1)) # 초기에 페이지는 1로 시작
+#     paginator=Paginator(all_boards,3) # 전체 글을 가져와서 5개씩 나누어 보여줌
 
-class MypageWrite(View):
-    pass
+#     boards=paginator.get_page(page)
+#     return render(request, 'board_list.html',{'boards' : boards})
 
-class MypageUpdate(View):
-    pass
+
+
+# from django.shortcuts import render
+# from .forms import YourForm  # YourForm은 폼 클래스의 이름입니다
+
+# def your_view_function(request):
+#     if request.method == 'POST':
+#         form = YourForm(request.POST)
+#         if form.is_valid():
+#             # 폼이 유효할 때 처리 로직
+#             # form.cleaned_data를 사용하여 폼 데이터에 접근 가능
+#             age = form.cleaned_data['age']
+#             gender = form.cleaned_data['gender']
+#             # 추가로 처리할 내용 작성
+
+#     else:
+#         form = YourForm()
+
+#     return render(request, 'mypage_write.html', {'form': form})

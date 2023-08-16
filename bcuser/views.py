@@ -18,11 +18,15 @@ class RegisterView(FormView):
     def form_valid(self, form):
         bcuser = Bcuser(
             email = form.data.get('email'),
+            nickname = form.data.get('nickname'),
             password = make_password(form.data.get('password')),
             level = 'user',
         )
         if Bcuser.objects.filter(email=form.data.get('email')).exists(): #User의 email객체들 중 form에 입력한 email과 같은 대상이 존재하면,
             form.add_error('email', '이미 사용 중인 이메일입니다.') # form에 email에러필드에 에러를 추가하라
+            return self.form_invalid(form)
+        if Bcuser.objects.filter(nickname=form.data.get('nickname')).exists(): #User의 email객체들 중 form에 입력한 email과 같은 대상이 존재하면,
+            form.add_error('nickname', '이미 사용 중인 닉네임입니다.') # form에 email에러필드에 에러를 추가하라
             return self.form_invalid(form)
 
         else:
