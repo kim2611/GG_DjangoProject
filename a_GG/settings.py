@@ -43,7 +43,7 @@ INSTALLED_APPS = [
     "bcuser",
     #"c_notice",
     "d_event",
-    "e_duo",
+    # "e_duo",
     "f_squad",
     "g_multi",
     "h_justchat",

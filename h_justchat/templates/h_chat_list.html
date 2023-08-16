@@ -45,8 +45,8 @@
             </li>
             <li class="list-group-item list-group-item-primary d-flex justify-content-between align-items-center">자유게시판
                 <ul class="list-group sub-menu">
-                    <li><a class="list-group-item list-group-item-action sub-size" href="">잡담</a></li>
-                    <li><a class="list-group-item list-group-item-action sub-size" href="">질문</a></li>
+                    <li><a class="list-group-item list-group-item-action sub-size" href="/chat_board/">잡담</a></li>
+                    <li><a class="list-group-item list-group-item-action sub-size" href="/qna_board/">질문</a></li>
                 </ul>
             </li>
             <li class="list-group-item list-group-item-primary d-flex justify-content-between align-items-center">중고 거래
@@ -101,7 +101,7 @@
                                 <td>{{chat.id}}</td>
                                 <td>{{chat.get_h_category_display}}</td>
                                 <td class="table-title">{{chat.h_title}}</td>
-                                <td><a href="">{{chat.h_writer}}</a></td>
+                                <td><a href="">{{chat.h_writer.nickname}}</a></td>
                                 <td>{{chat.h_click}}</td>
                                 <td>{{chat.h_votes}}</td>
                                 <td>{{chat.h_register_date|date:'Y-m-d H:i'}}</td>
@@ -113,7 +113,7 @@
                                 <td>{{chat.id}}</td>
                                 <td>{{chat.get_h_category_display}}</td>
                                 <td class="table-title">{{chat.h_title}}</td>
-                                <td>{{chat.h_writer}}</td>
+                                <td><a href="">{{chat.h_writer.nickname}}</a></td>
                                 <td>{{chat.h_click}}</td>
                                 <td>{{chat.h_votes}}</td>
                                 <td>{{chat.h_register_date|date:'Y-m-d H:i'}}</td>

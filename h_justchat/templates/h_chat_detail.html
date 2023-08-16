@@ -48,7 +48,7 @@
             </div>
         </div>
     </div>
-</div>
+</div> 
 
 <div class="container mt-3 text-center">
     <button type="button" class="btn btn-primary" onclick="location.href='/chat_board/'">돌아가기</button>
@@ -66,7 +66,7 @@
                     <li class="list-group-item">
                         <p>{{ comment.comment }}</p>
                         <small class="text-muted">
-                            작성자: <a href="">{{ comment.author }}</a> | 작성일: {{ comment.created_at|date:'Y-m-d H:i' }}
+                            작성자: <a href="">{{ comment.author.nickname }}</a> | 작성일: {{ comment.created_at|date:'Y-m-d H:i' }}
                         </small>
                         <button type="button" class="btn btn-danger small-btn" onclick="location.href='/chat_board/{{comment.id}}/comment_delete/'">삭제하기</button>
                     </li>
