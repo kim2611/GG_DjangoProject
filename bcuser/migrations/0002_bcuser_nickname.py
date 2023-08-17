@@ -12,7 +12,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name="bcuser",
             name="nickname",
-            field=models.CharField(default="null", max_length=64, verbose_name="닉네임"),
-            preserve_default=False,
+            field=models.CharField(max_length=64, verbose_name="닉네임"),
+            
         ),
     ]

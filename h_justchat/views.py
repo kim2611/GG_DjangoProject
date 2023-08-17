@@ -54,10 +54,7 @@ def board_write(request):
     if request.method == 'POST':
         form = h_ChatForm(request.POST)
         print(request.POST) 
-        if form.is_valid():  # 폼이 유효한지(ok 빈값일때 에러메시지 확인)
-            #user_id = request.session.get('user')  # 세션에서 로그인한 아이디 확보
-            # 실제 데이터 베이스에서 로그인한 id 가져오기
-            #bcuser = form.data.get('email')
+        if form.is_valid():
 
             chat = h_Chat()  # 게시판의 객체 생성 : 유효성 검사가 통과된 데이터를 저장하기 위함
             chat.h_category = form.cleaned_data['category']
@@ -137,7 +134,7 @@ class Board_detail(FormView):
             user = Bcuser.objects.get(email=request.session.get('user'))
             is_upvoted = user in chat.h_voters.all()
         except Bcuser.DoesNotExist:
-            pass
+            user=""
 
         comments = h_Comment.objects.filter(post=chat)
         comment_form = CommentForm()
@@ -147,6 +144,7 @@ class Board_detail(FormView):
             'comment_form': comment_form,
             'comments': comments,
             'is_upvoted': is_upvoted,
+            'use' : user
         }
         
         return render(request, self.template_name, context)
@@ -185,18 +183,19 @@ def board_update(request, pk):
     except h_Chat.DoesNotExist:  # 게시글이 없을때 다음 메시지를 띄움
         raise Http404('게시글을 찾을 수 없습니다.')
 
-    if request.method == 'POST':
-        form = h_ChatForm(request.POST)
-        if form.is_valid():  # 폼이 유효한지
-            user_id = request.session.get('user') # 세션에서 로그인한 아이디 확보
-            chat.h_category = form.cleaned_data['category']
-            chat.h_title = form.cleaned_data['title']
-            chat.h_contents = form.cleaned_data['contents']
-            chat.h_writer = Bcuser.objects.get(email=request.session.get('user'))
-            chat.h_nickname = Bcuser.objects.get(nickname=request.session.get('user'))
-            chat.save()
-            return redirect('/chat_board/')
+    if Bcuser.objects.get(email=request.session.get('user')) == chat.h_writer:
+        if request.method == 'POST':
+            form = h_ChatForm(request.POST)
+            if form.is_valid():  # 폼이 유효한지
+                chat.h_category = form.cleaned_data['category']
+                chat.h_title = form.cleaned_data['title']
+                chat.h_contents = form.cleaned_data['contents']
+                chat.h_writer = Bcuser.objects.get(email=request.session.get('user'))
+                chat.save()
+                return redirect('/chat_board/')
+        else:
+            form = h_ChatForm(initial={'title':chat.h_title, 'contents':chat.h_contents, 'category':chat.h_category})
+        return render(request, 'h_chat_update.html', {'form': form})
     else:
-        form = h_ChatForm(initial={'title':chat.h_title, 'contents':chat.h_contents, 'category':chat.h_category})
-    return render(request, 'h_chat_update.html', {'form': form})
+        raise Http404('권한이 없습니다')
 

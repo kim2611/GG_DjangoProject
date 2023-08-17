@@ -17,7 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from bcuser.views import *
-from h_justchat.views import *
+
 #from c_notice.views import *
 
 urlpatterns = [
@@ -32,4 +32,8 @@ urlpatterns = [
     path("", include('k_sellboard.urls')),
     path("", include('n_order.urls')),
     path("qna_board/", include('i_qna.urls')),
+    path("duo_board/", include('e_duo.urls')),
+    path("squad_board/", include('f_squad.urls')),
+    path("info_board/", include('l_info.urls')),
+    path("mypage/", include('o_mypage.urls')),
 ]
