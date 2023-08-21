@@ -41,9 +41,9 @@ INSTALLED_APPS = [
     'django.contrib.humanize',
     'rest_framework',
     "bcuser",
-    #"c_notice",
+    "c_notice",
     "d_event",
-    # "e_duo",
+    "e_duo",
     "f_squad",
     "g_multi",
     "h_justchat",
@@ -53,6 +53,8 @@ INSTALLED_APPS = [
     "l_info",
     "m_howto",
     "n_order",
+    "o_mypage",
+    "p_tag",
 ]
 
 MIDDLEWARE = [

@@ -137,7 +137,7 @@ class Board_detail(FormView):
             user = Bcuser.objects.get(email=request.session.get('user'))
             is_upvoted = user in qna.i_voters.all()
         except Bcuser.DoesNotExist:
-            pass
+            user=""
 
         comments = i_Comment.objects.filter(post=qna)
         comment_form = CommentForm()
@@ -147,6 +147,7 @@ class Board_detail(FormView):
             'comment_form': comment_form,
             'comments': comments,
             'is_upvoted': is_upvoted,
+            'user' : user
         }
         
         return render(request, self.template_name, context)
@@ -185,17 +186,19 @@ def board_update(request, pk):
     except i_Qna.DoesNotExist:  # 게시글이 없을때 다음 메시지를 띄움
         raise Http404('게시글을 찾을 수 없습니다.')
 
-    if request.method == 'POST':
-        form = i_QnaForm(request.POST)
-        if form.is_valid():  # 폼이 유효한지
-            user_id = request.session.get('user') # 세션에서 로그인한 아이디 확보
-            qna.i_category = form.cleaned_data['category']
-            qna.i_title = form.cleaned_data['title']
-            qna.i_contents = form.cleaned_data['contents']
-            qna.i_writer = Bcuser.objects.get(email=request.session.get('user'))
-            qna.save()
-            return redirect('/qna_board/')
+    if Bcuser.objects.get(email=request.session.get('user')) == qna.i_writer:
+        if request.method == 'POST':
+            form = i_QnaForm(request.POST)
+            if form.is_valid():  # 폼이 유효한지
+                qna.i_category = form.cleaned_data['category']
+                qna.i_title = form.cleaned_data['title']
+                qna.i_contents = form.cleaned_data['contents']
+                qna.i_writer = Bcuser.objects.get(email=request.session.get('user'))
+                qna.save()
+                return redirect('/qna_board/')
+        else:
+            form = i_QnaForm(initial={'title':qna.i_title, 'contents':qna.i_contents, 'category':qna.i_category})
+        return render(request, 'i_qna_update.html', {'form': form})
     else:
-        form = i_QnaForm(initial={'title':qna.i_title, 'contents':qna.i_contents, 'category':qna.i_category})
-    return render(request, 'i_qna_update.html', {'form': form})
+        raise Http404('권한이 없습니다')
 

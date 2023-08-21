@@ -33,18 +33,20 @@
         <div class="card-header">
             <h5 class="card-title">[{{qna.get_i_category_display}}] {{ qna.i_title }}</h5>
             <p class="detail-date">조회수 : {{qna.i_click}} / 추천수 : {{qna.i_votes}} / 작성 일자 : {{qna.i_register_date|date:'Y-m-d H:i'}}</p>
-            <p class="detail-writer">작성자 : <a href="">{{qna.i_writer|safe}}</a></p>
+            <p class="detail-writer">작성자 : <a href="">{{qna.i_writer.nickname|safe}}</a></p>
             <div class="card-body">
                 <ul class="list-group list-group-flush">
                     <li class="list-group-item"><p style="font-size: 18px;">내용:</p>{{ qna.i_contents|safe }}</li>
                 </ul>
-                <div class="text-center">
-                    {% if is_upvoted %}
-                        <a href="{% url 'qna_board_vote' pk=qna.pk %}" class="btn btn-danger btn-vote-cancle">추천취소</a>
-                    {% else %}
-                        <a href="{% url 'qna_board_vote' pk=qna.pk %}" class="btn btn-warning btn-vote-vote">추천하기</a>
-                    {% endif %}
-                </div>
+                {% if user == qna.i_writer %}
+                {% else %}
+                    <div class="text-center">
+                        {% if is_upvoted %}
+                            <a href="{% url 'qna_board_vote' pk=qna.pk %}" class="btn btn-danger btn-vote-cancle">추천취소</a>
+                        {% else %}
+                            <a href="{% url 'qna_board_vote' pk=qna.pk %}" class="btn btn-warning btn-vote-vote">추천하기</a>
+                        {% endif %}
+                {% endif %}
             </div>
         </div>
     </div>
@@ -52,8 +54,8 @@
 
 <div class="container mt-3 text-center">
     <button type="button" class="btn btn-primary" onclick="location.href='/qna_board/'">돌아가기</button>
-    <button type="button" class="btn btn-warning" onclick="location.href='/qna_board/{{qna.id}}/update'">수정하기</button>
-    <button type="button" class="btn btn-danger" onclick="location.href='/qna_board/{{qna.id}}/delete'">삭제하기</button>
+    <button type="button" class="btn btn-warning" onclick="location.href='/qna_board/update/{{qna.id}}'">수정하기</button>
+    <button type="button" class="btn btn-danger" onclick="location.href='/qna_board/delete/{{qna.id}}'">삭제하기</button>
 </div>
 
 <div class="container mt-5">

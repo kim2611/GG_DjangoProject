@@ -1,0 +1,117 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block header %}
+<style>
+    .body-div {
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        height: 60vh;
+    }
+
+    .updown-div {
+        display: flex;
+        flex-direction: row;
+        /* 가로 방향으로 배치 */
+        flex-grow: 1;
+        /* 세로 방향으로 화면 높이를 모두 사용 */
+    }
+
+    .left-div {
+        width: 25%;
+        border: 2px solid black;
+        background-color: lightgray;
+    }
+
+    .right-div {
+        width: 75%;
+        border: 2px solid black;
+        background-color: lightblue;
+
+    }
+
+    .textarea-style {
+        height: auto;
+        resize: vertical;
+        padding-bottom: 20px;
+        /* 아래쪽 여백 추가 */
+    }
+</style>
+{% endblock %}
+{% block contents %}
+<div class="top">
+    <div class="home_top">
+        <a href="../"><img id='home_img' src="{% static 'images/logo.png' %}" alt="로고 이미지"></a>
+
+        {% if request.session.user %}
+        <div class="logout_align">
+            <span class="badge bg-dark">
+                <a class="top_menu" href="">마이 페이지</a>
+            </span>
+            <span class="badge bg-dark">
+                <a class="top_menu" href="../logout/">로그아웃</a>
+            </span>
+        </div>
+        {% else %}
+        <div class="login_align">
+            <span class="badge bg-dark">
+                <a class="top_menu" href="../login/">로그인</a>
+            </span>
+            <span class="badge bg-dark">
+                <a class="top_menu" href="../register/">회원가입</a>
+            </span>
+        </div>
+        {% endif%}
+    </div>
+</div>
+
+<div class='body-div'>
+    <div class="updown-div">
+
+        <div class="right-div">
+            <div class="chat-list">
+                <form action="." method="POST">
+                    {% csrf_token %}
+                    {% for field in form.visible_fields %}
+                    <div class="form-group mb-3">
+                        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+
+                        {% if field.field.widget.input_type == 'select' %}
+                        <select class="form-control" id="{{ field.id_for_label }}" name="{{ field.name }}">
+                            <option value="" {% if not field.value %}selected{% endif %}>---------</option>
+                            {% for value, label in field.field.choices %}
+                            <option value="{{ value }}" {% if value==field.value %}selected{% endif %}>{{ label }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                        {% elif field.field.widget.input_type == 'textarea' %}
+                        <textarea class="form-control textarea-style" id="{{ field.id_for_label }}"
+                            name="{{ field.name }}" rows="3">{{ field.value }}</textarea>
+                        {% else %}
+                        <input type="{{ field.field.widget.input_type }}" class="form-control"
+                            id="{{ field.id_for_label }}" placeholder="{{ field.label }}" name="{{ field.name }}" {% if
+                            field.value %}value="{{ field.value }}" {% endif %}>
+                        {% endif %}
+
+                        {% if field.errors %}
+                        <span style="color: red">{{ field.errors|join:", " }}</span>
+                        {% endif %}
+                    </div>
+                    {% endfor %}
+                    <br />
+
+
+                    <div class="mt-3">
+                        <div class="d-flex justify-content-end"> <!-- 수정된 위치 -->
+                            <button type="submit" class="btn btn-warning">작성 완료</button>
+                            <button type="button" class="btn btn-warning ml-2" onclick="location.href='/mypage/main'">돌아
+                                가기</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

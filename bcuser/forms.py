@@ -11,13 +11,15 @@ class RegisterForm(forms.Form):
         error_messages={'required' : '비밀번호를 입력해주세요.'},
         widget=forms.PasswordInput, label='비밀번호'
     )
-    nickname = forms.CharField(
-        error_messages={'required' : '닉네임을 입력해주세요.'},
-        widget=forms.PasswordInput, label='닉네임'
-    )
+
     re_password = forms.CharField(
         error_messages={'required' : '비밀번호를 입력해주세요.'},
         widget=forms.PasswordInput, label='비밀번호'
+    )
+    
+    nickname = forms.CharField(
+        error_messages={'required' : '닉네임을 입력해주세요.'},
+        max_length=24, label='닉네임'
     )
     
     def clean(self):

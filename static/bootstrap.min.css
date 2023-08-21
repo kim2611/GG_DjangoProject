@@ -14561,3 +14561,21 @@ a.top_menu{
     width: 1000px;
     height: 860px;
 } 
+
+.participant{
+    display: inline-block;
+}
+
+.info-writer{
+    margin : 0px;
+    padding : 0px;
+    text-align-last: right;
+}
+.info-date{
+    margin : 0px;
+    padding : 0px;
+    text-align-last: right;
+}
+.info-title{
+    display:inline;
+}

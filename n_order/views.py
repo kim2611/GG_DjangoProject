@@ -41,7 +41,7 @@ class OrderCreate(FormView):
     # 폼의 데이터가 유효하지 않을 때 호출되는 메서드
     def form_invalid(self, form):
         # 해당 제품의 페이지로 리다이렉트
-        return redirect('/product/' + str(form.data.get('product')))
+        return redirect('/product/' + str(form.data.get('product.pk')))
 
     # 폼을 초기화하는 데 필요한 인자들을 반환하는 메서드
     def get_form_kwargs(self, **kwargs):
