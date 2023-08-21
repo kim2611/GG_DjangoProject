@@ -33,7 +33,7 @@
         <div class="card-header">
             <h5 class="card-title">[{{duo.get_e_category_display}}] {{ duo.e_title }}</h5>
             <p class="detail-date">조회수 : {{duo.e_click}} / 작성 일자 : {{duo.e_register_date|date:'Y-m-d H:i'}}</p>
-            <p class="detail-writer">작성자 : <a href="">{{duo.e_writer.nickname|safe}}</a></p>
+            <p class="detail-writer">작성자 : <a href="{% url 'mypage_detail' writer_id=duo.e_writer.id %}" target="_blank">{{duo.e_writer.nickname|safe}}</a></p>
             <div class="card-body">
                 <ul class="list-group list-group-flush">
                     <li class="list-group-item"><p style="font-size: 18px;">내용:</p>{{ duo.e_contents|safe }}</li>
@@ -42,7 +42,7 @@
                 <div>참가 신청자 목록
                     <ul class="list-group list-group-flush list-join">
                         {% for voter in voters %}
-                            <li class="list-group-item participant"><a href="">{{ voter.nickname }}</a></li>
+                            <li class="list-group-item participant"><a href="{% url 'mypage_detail' writer_id=voter.id %}" target="_blank">{{ voter.nickname }}</a></li>
                         {% empty %}
                             <li class="list-group-item"> </li>
                         {% endfor %}

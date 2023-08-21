@@ -22,18 +22,23 @@ from bcuser.views import *
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path('', home),
+    path('', Hometable.as_view(), name = 'home'),
     path('login/', LoginView.as_view(), name="login"),
     path('logout/', logout),
     path('register/', RegisterView.as_view()),
     
-    #path("notice_board/", include('c_notice.urls')), # 127.0.0.1:8000/notice_board/
-    path("chat_board/", include('h_justchat.urls')), # 127.0.0.1:8000/notice_board/
-    path("", include('k_sellboard.urls')),
-    path("", include('n_order.urls')),
-    path("qna_board/", include('i_qna.urls')),
+    path("notice_board/", include('c_notice.urls')), # 127.0.0.1:8000/notice_board/
     path("duo_board/", include('e_duo.urls')),
     path("squad_board/", include('f_squad.urls')),
+    path("multi_board/", include('g_multi.urls')),
+    path("chat_board/", include('h_justchat.urls')), # 127.0.0.1:8000/notice_board/
+    path("qna_board/", include('i_qna.urls')),
+    path("", include('j_buyboard.urls')),
+    path("", include('k_sellboard.urls')),
+    path("", include('n_order.urls')),
+
+
     path("info_board/", include('l_info.urls')),
+    path("howto_board/", include('m_howto.urls')),
     path("mypage/", include('o_mypage.urls')),
 ]

@@ -30,13 +30,13 @@ class f_SquadForm(forms.Form):
     )
     need = forms.IntegerField(
         error_messages={
-            'required':'게시판에 맞는 인원 수를 입력해주세요. (2인 게시판)'
+            'required':'게시판에 맞는 인원 수를 입력해주세요. (3-4인 게시판)'
         },
         label='참가인원'
     )
     def clean_need(self):
         need = self.cleaned_data['need']
-        if need > 3 or need < 0:
+        if need > 3 or need <= 0:
             raise forms.ValidationError("게시판에 맞는 인원 수를 입력해주세요. (3-4인 게시판)")
         return need
 

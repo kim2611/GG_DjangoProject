@@ -10,19 +10,19 @@
         {% if request.session.user %}
         <div class="logout_align">
             <span class="badge bg-dark">
-                <a class="top_menu" href="">마이 페이지</a>
+                <a class="top_menu" href="/mypage/">마이 페이지</a>
             </span>
             <span class="badge bg-dark">
-                <a class="top_menu" href="logout/">로그아웃</a>
+                <a class="top_menu" href="/logout/">로그아웃</a>
             </span>
         </div>
         {% else %}
         <div class="login_align">
             <span class="badge bg-dark">
-                <a class="top_menu" href="login/">로그인</a>
+                <a class="top_menu" href="/login/">로그인</a>
             </span>
             <span class="badge bg-dark">
-                <a class="top_menu" href="register/">회원가입</a>
+                <a class="top_menu" href="/register/">회원가입</a>
             </span>
         </div>
         {% endif%}
@@ -33,101 +33,131 @@
         <ul class="list-group">
             <li class="list-group-item list-group-item-light d-flex justify-content-between align-items-center">공지사항
                 <ul class="list-group sub-menu">
-                    <li><a class="list-group-item list-group-item-action sub-size" href="">필독 공지</a></li>
-                    <li><a class="list-group-item list-group-item-action sub-size" href="">이벤트</a></li>
+                    <li><a class="list-group-item list-group-item-action sub-size" href="/notice_board/">필독 공지</a></li>
+                    {% comment %} <li><a class="list-group-item list-group-item-action sub-size" href="">이벤트</a></li> {% endcomment %}
                 </ul>
             </li>
             <li class="list-group-item list-group-item-primary d-flex justify-content-between align-items-center">유저모으기
                 <ul class="list-group sub-menu">
-                    <li><a class="list-group-item list-group-item-action sub-size" href="">2인 게임</a></li>
-                    <li><a class="list-group-item list-group-item-action sub-size" href="">3~4인 게임</a></li>
-                    <li><a class="list-group-item list-group-item-action sub-size" href="">5인이상 게임</a></li>
+                    <li><a class="list-group-item list-group-item-action sub-size" href="/duo_board/">2인 게임</a></li>
+                    <li><a class="list-group-item list-group-item-action sub-size" href="/squad_board/">3~4인 게임</a></li>
+                    <li><a class="list-group-item list-group-item-action sub-size" href="/multi_board/">5인이상 게임</a></li>
                 </ul>
             </li>
             <li class="list-group-item list-group-item-primary d-flex justify-content-between align-items-center">자유게시판
                 <ul class="list-group sub-menu">
-                    <li><a class="list-group-item list-group-item-action sub-size" href="chat_board/">잡담</a></li>
-                    <li><a class="list-group-item list-group-item-action sub-size" href="">질문</a></li>
+                    <li><a class="list-group-item list-group-item-action sub-size" href="/chat_board/">잡담</a></li>
+                    <li><a class="list-group-item list-group-item-action sub-size" href="/qna_board/">질문</a></li>
                 </ul>
             </li>
             <li class="list-group-item list-group-item-primary d-flex justify-content-between align-items-center">중고 거래
                 <ul class="list-group sub-menu">
-                    <li><a class="list-group-item list-group-item-action sub-size" href="">삽니다</a></li>
-                    <li><a class="list-group-item list-group-item-action sub-size" href="sellboard">팝니다</a></li>
+                    <li><a class="list-group-item list-group-item-action sub-size" href="/buyboard/">삽니다</a></li>
+                    <li><a class="list-group-item list-group-item-action sub-size" href="/sellboard/">팝니다</a></li>
                 </ul>
             </li>
             <li class="list-group-item list-group-item-primary d-flex justify-content-between align-items-center">게임 정보
                 <ul class="list-group sub-menu">
-                    <li><a class="list-group-item list-group-item-action sub-size" href="">게임 소개</a></li>
-                    <li><a class="list-group-item list-group-item-action sub-size" href="">멀티 하는 방법</a></li>
+                    <li><a class="list-group-item list-group-item-action sub-size" href="/info_board/">게임 소개</a></li>
+                    <li><a class="list-group-item list-group-item-action sub-size" href="/howto_board/">유저 소식</a></li>
                 </ul>
             </li>
         </ul>
     </div>
 
-<div class="home_deco">
-    <div class="row mt-5">
-        <div class="col-12">
-            <table class="table table-light">
-                <thead class="thead-light">
-                    <tr>
-                        <!--scope="col" : 헤더 셀이 어떤 테이블 셀을 명시함 -->
-                        <th scope="col">#</th>
-                        <th scope="col">상품명</th>
-                        <th scope="col">가격</th>
-                        <th scope="col">등록날짜</th>
-                    </tr>
-                </thead>
-                <tbody class="text-dark">
-                    {% for product in product_list %}
-                    <tr>
-                        <th scope="row">{{ product.id }}</th>
-                        <th><a id="product-{{product.id}}" onmouseenter="product_detail({{product.id}});"  
-                            onmouseleave="product_leave({{product.id}});"  href="/product/{{product.id}}">{{ product.name }}</a></th>
-                        <th>{{ product.price|intcomma}} 원</th>
-                        <th>{{ product.register_date|date:'Y-m-d H:i'}}</th>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+    <div class="home_deco chat-board">
+        <div class="chat-list">
+            <div class="col-12 d-flex justify-content-between align-items-center">
+                <div class="btn-group" role="group">
+                    <a href="?category=" class="btn btn-secondary">전체</a>
+                    <a href="?category=본체" class="btn btn-secondary">본체</a>
+                    <a href="?category=타이틀" class="btn btn-secondary">타이틀</a>
+                    <a href="?category=주변기기" class="btn btn-secondary">주변기기</a>
+                    <a href="?category=기타" class="btn btn-secondary">기타</a>
+                </div>
+                <button type="submit" class="btn btn-primary write-btn"
+                    onclick="location.href = '/sellboard/create/'">글쓰기</button>
+            </div>
         </div>
-    </div>
-    <!--  {{ product_list.previous_page_number }} 랑 {{ product_list.next_page_number }}가 작동을 안하는 중. 최악의 경우 삭제 가능 -->
-    <div class="row">
-        <div class="col-12">
-            <nav>
-                <ul class="pagination justify-content-center">
-                    {% if product_list.has_previous%}
-                    <li class="page-item">
-                        <a class="page-link" href="?page={{ product_list.previous_page_number }}">이전으로</a>
-                    </li>
-                    {% else %}
-                    <li class="page-item disableed">
-                        <a class="page-link" href="#">이전으로</a>
-                    </li>
-                    {% endif %}
+        <div class="chat-list">
+            <div class="col-12 d-flex justify-content-between align-items-center">
+                <table class="table table-light">
+                    <thead class="thead-light">
+                        <tr>
+                            <th scope="col">번호</th>
+                            <th scope="col">판매여부</th>
+                            <th scope="col">카테고리</th>
+                            <th scope="col">상품명</th>
+                            <th scope="col">가격</th>
+                            <th scope="col">판매자</th>
+                            <th scope="col">조회수</th>
+                            <th scope="col">찜</th>
+                            <th scope="col">등록날짜</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-dark">
+                        {% for product in product_list %}
+                        <tr>
+                            <th scope="row">{{ product.id }}</th>
+                            <th scope="row">                                {% if product.stock == 0 %}
+                                <span class="badge badge-success" style="background-color: rgb(81, 88, 83); color: rgb(255, 255, 255); padding: 5px 10px; border-radius: 5px;">판매완료</span>
+                                {% else %}
+                                <span class="badge badge-success" style="background-color: rgb(81, 88, 83); color: white; padding: 5px 10px; border-radius: 5px;">판매중</span>
+                                {% endif %}</th>
+                            <th>{{ product.category }}</th>
+                            <th><a id="product-{{product.id}}" onmouseenter="product_detail({{product.id}});"
+                                onmouseleave="product_leave({{product.id}});" href="/product/{{product.id}}">{{ product.name }}</a></th>
+                            <th><a id="product-{{product.id}}" onmouseenter="product_detail({{product.id}});"
+                                onmouseleave="product_leave({{product.id}});" href="/product/{{product.id}}">{{ product.price|intcomma}} 원</a></th>
+                            <th>{{ product.writer.nickname }}</th>
+                            <td>{{product.views}}</td>
+                            <td>{{product.jjim}}</td>
+                            <th>{{ product.register_date|date:'Y-m-d H:i'}}</th>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <!--  {{ product_list.previous_page_number }} 랑 {{ product_list.next_page_number }}가 작동을 안하는 중. 최악의 경우 삭제 가능 -->
+        <div class="row">
+            <div class="col-12">
+                <nav>
+                    <ul class="pagination justify-content-center">
+                        {% if product_list.has_previous%}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ product_list.previous_page_number }}">이전으로</a>
+                        </li>
+                        {% else %}
+                        <li class="page-item disableed">
+                            <a class="page-link" href="#">이전으로</a>
+                        </li>
+                        {% endif %}
 
-                    <li class="page-item active">
-                        <a class="page-link" href="#">{{product_list.number}}/{{product_list.paginator_by.num_pages}}</a>
-                    </li>
+                        <li class="page-item active">
+                            <a class="page-link"
+                                href="#">{{product_list.number}}/{{product_list.paginator_by.num_pages}}</a>
+                        </li>
 
-                    {% if product_list.has_next%}
-                    <li class="page-item">
-                        <a class="page-link" href="?page={{ product_list.next_page_number }}">다음으로</a>
-                    </li>
-                    {% else %}
-                    <li class="page-item" disableed>
-                        <a class="page-link" href="#">다음으로</a>
-                    </li>
-                    {% endif %} 
-                </ul>
-            </nav>
+                        {% if product_list.has_next%}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ product_list.next_page_number }}">다음으로</a>
+                        </li>
+                        {% else %}
+                        <li class="page-item" disableed>
+                            <a class="page-link" href="#">다음으로</a>
+                        </li>
+                        {% endif %}
+                    </ul>
+                    <div class="bottom-group">
+                        <form method="GET" action="" class="form-search">
+                            {{ form.search_query.label_tag }}
+                            {{ form.search_query }}
+                            <button type="submit" class="btn btn-primary">검색</button>
+                        </form>
+                    </div>
+                </nav>
+            </div>
         </div>
     </div>
-    <div class="row">
-        <div class="col-12">
-            <button type="submit" class="btn btn-primary" onclick="location.href = '/sellboard/create/'">글쓰기</button>
-        </div>
-    </div>
-</div>
-{% endblock %}
+    {% endblock %}

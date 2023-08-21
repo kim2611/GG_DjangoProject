@@ -5,6 +5,7 @@ class Order(models.Model):
     product=models.ForeignKey('k_sellboard.Product', on_delete=models.CASCADE, verbose_name='상품')
     quantity=models.IntegerField(verbose_name='수량')
     register_date=models.DateTimeField(auto_now_add=True, verbose_name='주문날짜')
+    
 
 
     def __str__(self):

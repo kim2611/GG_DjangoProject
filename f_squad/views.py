@@ -131,6 +131,7 @@ class Board_detail(FormView):
         comments = f_Comment.objects.filter(post=squad)
         comment_form = CommentForm()
         
+        
         context = {
             'squad': squad,
             'comment_form': comment_form,
@@ -188,7 +189,7 @@ def board_update(request, pk):
                 squad.save()
                 return redirect('/squad_board/')
         else:
-            form = f_SquadForm(initial={'title':squad.f_title, 'contents':squad.f_contents, 'category':squad.f_category})
+            form = f_SquadForm(initial={'title':squad.f_title, 'contents':squad.f_contents, 'category':squad.f_category, 'need':squad.f_need})
         return render(request, 'f_squad_update.html', {'form': form})
     else:
         raise Http404('권한이 없습니다')

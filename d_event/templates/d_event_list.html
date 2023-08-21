@@ -1,0 +1,154 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block contents %}
+
+<div class="top">
+    <div class="home_top">
+        <a href="../"><img id='home_img' src="{% static 'images/logo.png' %}" alt="로고 이미지"></a>
+
+        {% if request.session.user %}
+        <div class="logout_align">
+            <span class="badge bg-dark">
+                <a class="top_menu" href="">마이 페이지</a>
+            </span>
+            <span class="badge bg-dark">
+                <a class="top_menu" href="../logout/">로그아웃</a>
+            </span>
+        </div>
+        {% else %}
+        <div class="login_align">
+            <span class="badge bg-dark">
+                <a class="top_menu" href="../login/">로그인</a>
+            </span>
+            <span class="badge bg-dark">
+                <a class="top_menu" href="../register/">회원가입</a>
+            </span>
+        </div>
+        {% endif%}
+    </div>
+</div>
+<div class='flex-container'>
+    <div class="list-side">
+        <ul class="list-group">
+            <li class = "list-group-item list-group-item-light d-flex justify-content-between align-items-center">공지사항
+                <ul class="list-group sub-menu">
+                    <li><a class="list-group-item list-group-item-action sub-size" href="/notice_board/">필독 공지</a></li>
+                    {% comment %} <li><a class="list-group-item list-group-item-action sub-size" href="">이벤트</a></li> {% endcomment %}
+                </ul>
+            </li>
+            <li class = "list-group-item list-group-item-primary d-flex justify-content-between align-items-center">유저모으기
+                <ul class="list-group sub-menu">
+                    <li><a class="list-group-item list-group-item-action sub-size" href="/duo_board/">2인 게임</a></li>
+                    <li><a class="list-group-item list-group-item-action sub-size" href="/squad_board/">3~4인 게임</a></li>
+                    <li><a class="list-group-item list-group-item-action sub-size" href="/multi_board/">5인이상 게임</a></li>
+                </ul>
+            </li>
+            <li class = "list-group-item list-group-item-primary d-flex justify-content-between align-items-center">자유게시판
+                <ul class="list-group sub-menu">
+                    <li><a class="list-group-item list-group-item-action sub-size" href="/chat_board/">잡담</a></li>
+                    <li><a class="list-group-item list-group-item-action sub-size" href="/qna_board/">질문</a></li>
+                </ul>
+            </li>
+            <li class = "list-group-item list-group-item-primary d-flex justify-content-between align-items-center">중고 거래
+                <ul class="list-group sub-menu">
+                    <li><a class="list-group-item list-group-item-action sub-size" href="/buyboard/">삽니다</a></li>
+                    <li><a class="list-group-item list-group-item-action sub-size" href="/sellboard/">팝니다</a></li>
+                </ul>
+            </li>
+            <li class = "list-group-item list-group-item-primary d-flex justify-content-between align-items-center">게임 정보
+                <ul class="list-group sub-menu">
+                    <li><a class="list-group-item list-group-item-action sub-size" href="/info_board/">게임 소개</a></li>
+                    <li><a class="list-group-item list-group-item-action sub-size" href="/howto_board/">유저 소식</a></li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+    <div class="home_deco chat-board">
+        <div class="chat-list">
+            <div class="col-12 d-flex justify-content-between align-items-center">
+                <div class="btn-group" role="group">
+                    <a href="?category=" class="btn btn-secondary">전체</a>
+                    <a href="?category=PC" class="btn btn-secondary">PC</a>
+                    <a href="?category=닌텐도" class="btn btn-secondary">닌텐도</a>
+                    <a href="?category=플스" class="btn btn-secondary">플스</a>
+                    <a href="?category=엑스박스" class="btn btn-secondary">엑스박스</a>
+                    <a href="?category=기타" class="btn btn-secondary">기타</a>
+                </div>
+                <div class="bottom-group">
+
+                    <form method="GET" action="" class="form-search">
+                        {{ form.search_query.label_tag }}
+                        {{ form.search_query }}
+                        <input type="hidden" name="category" value="{{ request.GET.category }}">
+                        <button type="submit" class="btn btn-primary">검색</button>
+                    </form>
+                </div>
+                
+                {% if user.level == 'admin' %}
+                    <button type="submit" class="btn btn-primary write-btn" onclick="location.href = '/info_board/write/'">글쓰기</button>
+                {% endif %}
+            </div>
+            <div>
+                <table class="table table-light">
+                    <tbody class="table-light">
+                        {%if all_infos %}
+                            {% for info in all_infos%}
+                                <td><a href="/info_board/{{info.id}}/">{{info.l_title}}</a></td>
+                                <td>{{ info.l_contents|truncatewords:30|safe }}
+                            {% empty%}
+                                <p>검색 결과가 없습니다.</p>
+                            {% endfor %}
+                        {%else%}
+                            {% for info in infos%}
+                                <tr>
+                                    <td>
+                                        <a href="/info_board/{{info.id}}/"><p class="btn btn-secondary"  style="display: inline-block;" >{{info.get_l_category_display}}</p><h2 style="display: inline-block;">{{info.l_title}}</h2></a>
+                                        <p class="info-writer">작성자 : {{info.l_writer.nickname}}</p>
+                                        <p class="info-date">추천수 : {{info.l_votes}}  /  작성일 : {{info.l_register_date|date:'Y-m-d'}}</p>
+                                    </td>
+                                </tr>
+                                <tr><td>{{ info.l_contents|truncatewords:30|safe }}</td></tr>
+                            {% empty%}
+                                <p>검색 결과가 없습니다.</p>
+                            {% endfor %}
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <nav>
+                
+                    <ul class="pagination justify-content-center">
+                        {% if infos.has_previous %}
+                        <li class="page-item">
+                            <a class="page-link" href="?p={{ infos.previous_page_number }}{% if form.cleaned_data.search_query %}&search_query={{ form.cleaned_data.search_query }}{% endif %}{% if request.GET.category %}&category={{ request.GET.category }}{% endif %}">이전으로</a>
+                        </li>
+                        {% else %}
+                        <li class="page-item disabled">
+                            <a class="page-link" href="#">이전으로</a>
+                        </li>
+                        {% endif %}
+        
+                        <li class="page-item active">
+                            <a class="page-link" href="#">{{ infos.number }}/{{ infos.paginator.num_pages }}</a>
+                        </li>
+        
+                        {% if infos.has_next %}
+                        <li class="page-item">
+                            <a class="page-link" href="?p={{ infos.next_page_number }}{% if form.cleaned_data.search_query %}&search_query={{ form.cleaned_data.search_query }}{% endif %}{% if request.GET.category %}&category={{ request.GET.category }}{% endif %}">다음으로</a>
+                        </li>
+                        {% else %}
+                        <li class="page-item disabled">
+                            <a class="page-link" href="#">다음으로</a>
+                        </li>
+                        {% endif %}
+                    </ul>
+
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

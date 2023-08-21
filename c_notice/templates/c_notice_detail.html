@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+{% load static %}
+{% load humanize %}
+{% block contents %}
+<div class="top">
+    <div class="home_top">
+        <a href="../../"><img id='home_img' src="{% static 'images/logo.png' %}" alt="로고 이미지"></a>
+
+        {% if request.session.user %}
+        <div class="logout_align">
+            <span class="badge bg-dark">
+                <a class="top_menu" href="../../">마이 페이지</a>
+            </span>
+            <span class="badge bg-dark">
+                <a class="top_menu" href="../../logout/">로그아웃</a>
+            </span>
+        </div>
+        {% else %}
+        <div class="login_align">
+            <span class="badge bg-dark">
+                <a class="top_menu" href="../../login/">로그인</a>
+            </span>
+            <span class="badge bg-dark">
+                <a class="top_menu" href="../../register/">회원가입</a>
+            </span>
+        </div>
+        {% endif%}
+    </div>
+</div>
+
+
+
+
+<div class="container mt-5">
+    <div class="card border-primary mb-3">
+        <div class="card-header">
+            <h5 class="card-title">[{{notice.get_c_category_display}}] {{ notice.c_title }}</h5>
+            <p class="detail-date">조회수 : {{notice.c_click}} / 추천수 : {{notice.c_votes}} / 작성 일자 : {{notice.c_register_date|date:'Y-m-d H:i'}}</p>
+            <p class="detail-writer">작성자 : <a href="">{{notice.c_writer.nickname|safe}}</a></p>
+            <div class="card-body">
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item"><p style="font-size: 18px;">내용:</p>{{ notice.c_contents|safe }}</li>
+                </ul>
+            {% if user == notice.c_writer %}
+
+            {% else %}
+                <div class="text-center">
+                    {% if is_upvoted %}
+                        <a href="{% url 'notice_board_vote' pk=notice.pk %}" class="btn btn-danger btn-vote-cancle">추천취소</a>
+                    {% else %}
+                        <a href="{% url 'notice_board_vote' pk=notice.pk %}" class="btn btn-warning btn-vote-vote">추천하기</a>
+                    {% endif %}
+                </div>
+            {%endif%}
+            </div>
+        </div>
+    </div>
+</div> 
+
+<div class="container mt-3 text-center">
+    <button type="button" class="btn btn-primary" onclick="location.href='/notice_board/'">돌아가기</button>
+    {% if user.level == 'admin' %}
+        <button type="button" class="btn btn-warning" onclick="location.href='/notice_board/update/{{notice.id}}'">수정하기</button>
+    {% endif %}
+    <button type="button" class="btn btn-danger" onclick="location.href='/notice_board/delete{{notice.id}}/'">삭제하기</button>
+</div>
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="mt-3">
+                <h4>댓글</h4>
+                <ul class="list-group mt-3">
+                    {% for comment in comments %}
+                    <li class="list-group-item">
+                        <p>{{ comment.comment }}</p>
+                        <small class="text-muted">
+                            작성자: <a href="">{{ comment.author.nickname }}</a> | 작성일: {{ comment.created_at|date:'Y-m-d H:i' }}
+                        </small>
+                        <button type="button" class="btn btn-danger small-btn" onclick="location.href='/notice_board/{{comment.id}}/comment_delete/'">삭제하기</button>
+                    </li>
+                    {% empty %}
+                    <li class="list-group-item">아직 댓글이 없습니다.</li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <div class="mt-3">
+                <h4>댓글 작성</h4>
+                <form method="post">
+                    {% csrf_token %}
+                    <input type="{{ comment_form.comment.field.widget.input_type }}" class="form-control" 
+                    id="{{ comment_form.comment.id_for_label }}" placeholder="댓글 작성" name="{{ comment_form.comment.name }}" value=""/>
+
+                    <button type="submit" class="btn btn-primary mt-2 comment-write">댓글 작성</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

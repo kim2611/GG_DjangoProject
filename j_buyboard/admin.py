@@ -1,9 +1,9 @@
 from django.contrib import admin
-from .models import Product
+from .models import buyProduct
 # Register your models here.
 
-class j_ProductAdmin(admin.ModelAdmin) :
-    list_display=('name', 'price','stock')
+class j_buyProductAdmin(admin.ModelAdmin) :
+    list_display=('name', 'price')
     
-admin.site.register(Product,j_ProductAdmin)
+admin.site.register(buyProduct,j_buyProductAdmin)
 

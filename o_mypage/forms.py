@@ -1,20 +1,48 @@
 from django import forms
+from .models import Bcuser
 
-# forms.Form: 유효성 검사를 진행하는 클래스로 상속받아서 사용함
-# class BoardForm(forms.Form):
-#     # 유효성 검사 : 값을 입력하지 않았을때 기본적으로 영문 메세지가 출력됨
-#     # 사용자가 원하는 메세지를 구현하여 출력할 수 있음
-#     title=forms.CharField(
-#         error_messages={
-#             'required':'제목을 입력해주세요'
-#         },
-#         max_length=128, label="제목")
-    
-#     contents=forms.CharField(
-#         error_messages={
-#         'required':'내용을 입력해주세요'
-#         },
-#         widget=forms.Textarea, label="내용")
-    
-#     tags = forms.CharField(
-#         required=False, label='태그')
+class MypageUpdate(forms.Form):
+    age = forms.ChoiceField(
+        choices=[
+        ('10대', '10대'),
+        ('20대', '20대'),
+        ('30대', '30대'),
+        ('40대', '40대'),
+        ('50대 이상', '50대 이상')
+],
+        error_messages={
+            'required': '연령대를 선택해주세요'
+        },
+        label="연령대", required=True
+    )
+
+    gender = forms.ChoiceField(
+        choices=[
+        ('남자', '남자'),
+        ('여자', '여자'),
+],
+        error_messages={
+            'required': '성별을 선택해주세요'
+        },
+        label="성별", required=True
+    )
+    voice = forms.ChoiceField(
+        choices=[
+        ('가능', '가능'),
+        ('불가능', '불가능'),
+],
+        error_messages={
+            'required': '음성채팅 참여 여부를 선택해주세요'
+        },
+        label="음성채팅 참여 여부", required=True
+    )
+    introduction = forms.CharField(
+        label="자기소개",
+        required=False,
+        max_length=80,
+        widget=forms.Textarea(attrs={
+            'rows': 3,  # 텍스트 영역의 높이를 설정
+            'style': 'max-height: 100px; overflow: auto; white-space: normal; word-wrap: break-word;'
+            }),  # 텍스트 영역의 높이를 설정
+        initial=""
+    )

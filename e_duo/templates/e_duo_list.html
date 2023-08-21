@@ -32,15 +32,15 @@
         <ul class="list-group">
             <li class = "list-group-item list-group-item-light d-flex justify-content-between align-items-center">공지사항
                 <ul class="list-group sub-menu">
-                    <li><a class="list-group-item list-group-item-action sub-size" href="">필독 공지</a></li>
-                    <li><a class="list-group-item list-group-item-action sub-size" href="">이벤트</a></li>
+                    <li><a class="list-group-item list-group-item-action sub-size" href="/notice_board/">필독 공지</a></li>
+                    {% comment %} <li><a class="list-group-item list-group-item-action sub-size" href="">이벤트</a></li> {% endcomment %}
                 </ul>
             </li>
             <li class = "list-group-item list-group-item-primary d-flex justify-content-between align-items-center">유저모으기
                 <ul class="list-group sub-menu">
                     <li><a class="list-group-item list-group-item-action sub-size" href="/duo_board/">2인 게임</a></li>
                     <li><a class="list-group-item list-group-item-action sub-size" href="/squad_board/">3~4인 게임</a></li>
-                    <li><a class="list-group-item list-group-item-action sub-size" href="">5인이상 게임</a></li>
+                    <li><a class="list-group-item list-group-item-action sub-size" href="/multi_board/">5인이상 게임</a></li>
                 </ul>
             </li>
             <li class = "list-group-item list-group-item-primary d-flex justify-content-between align-items-center">자유게시판
@@ -51,14 +51,14 @@
             </li>
             <li class = "list-group-item list-group-item-primary d-flex justify-content-between align-items-center">중고 거래
                 <ul class="list-group sub-menu">
-                    <li><a class="list-group-item list-group-item-action sub-size" href="">삽니다</a></li>
-                    <li><a class="list-group-item list-group-item-action sub-size" href="">팝니다</a></li>
+                    <li><a class="list-group-item list-group-item-action sub-size" href="/buyboard/">삽니다</a></li>
+                    <li><a class="list-group-item list-group-item-action sub-size" href="/sellboard/">팝니다</a></li>
                 </ul>
             </li>
             <li class = "list-group-item list-group-item-primary d-flex justify-content-between align-items-center">게임 정보
                 <ul class="list-group sub-menu">
-                    <li><a class="list-group-item list-group-item-action sub-size" href="">게임 소개</a></li>
-                    <li><a class="list-group-item list-group-item-action sub-size" href="">멀티 하는 방법</a></li>
+                    <li><a class="list-group-item list-group-item-action sub-size" href="/info_board/">게임 소개</a></li>
+                    <li><a class="list-group-item list-group-item-action sub-size" href="/howto_board/">유저 소식</a></li>
                 </ul>
             </li>
         </ul>
@@ -123,7 +123,7 @@
                                 <td>{{ duo.id }}</td>
                                 <td>{{ duo.get_e_category_display }}</td>
                                 <td class="table-title">{{ duo.e_title }}</td>
-                                <td>{{ duo.e_writer.nickname }}</td>
+                                <td><a href="">{{ duo.e_writer.nickname }}</a></td>
                                 <td>{{ duo.e_click }}</td>
                                 <td>
                                     {% if duo.e_votes > duo.e_need %}

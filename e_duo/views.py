@@ -9,6 +9,7 @@ from django.db import models
 from django.views.generic.edit import FormView
 from django.utils.decorators import method_decorator
 from bcuser.decorators import login_required
+from o_mypage.models import Mypage
 # Create your views here.
 
 # def chat_list(request):
@@ -159,6 +160,7 @@ class Board_detail(FormView):
             return redirect('/login/')
         duo = e_Duo.objects.get(pk=pk)
         
+        
         if request.method == 'POST':
             comment_form = CommentForm(request.POST)
             if comment_form.is_valid():
@@ -203,3 +205,7 @@ def board_update(request, pk):
     else:
         raise Http404('권한이 없습니다')
 
+
+def mypage_detail(request, writer_id):
+    latest_mypage = Mypage.objects.filter(writer_id=writer_id).order_by('-id').first()
+    return render(request, 'mypage_detail.html', {'latest_mypage': latest_mypage})

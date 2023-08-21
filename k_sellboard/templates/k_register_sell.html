@@ -12,7 +12,33 @@
     });
 </script>
 {% endblock %}
+{% load static %}
 {% block contents %}
+<div class="top">
+    <div class="home_top">
+        <a href="../../../"><img id='home_img' src="{% static 'images/logo.png' %}" alt="로고 이미지"></a>
+
+        {% if request.session.user %}
+        <div class="logout_align">
+            <span class="badge bg-dark">
+                <a class="top_menu" href="">마이 페이지</a>
+            </span>
+            <span class="badge bg-dark">
+                <a class="top_menu" href="../logout/">로그아웃</a>
+            </span>
+        </div>
+        {% else %}
+        <div class="login_align">
+            <span class="badge bg-dark">
+                <a class="top_menu" href="../login/">로그인</a>
+            </span>
+            <span class="badge bg-dark">
+                <a class="top_menu" href="../register/">회원가입</a>
+            </span>
+        </div>
+        {% endif%}
+    </div>
+</div>
 <div class="row mt-5">
     <div class="col-12 text-center">
         <h1>상품 등록</h1>
@@ -32,6 +58,13 @@
                 <label for="{{ field.id_for_label }}">{{ field.label }}</label>
                 {% if field.name == 'description' %}
                 <textarea class="form-control" name="{{ field.name }}" id="{{ field.id_for_label }}"></textarea>
+                {% elif field.name == 'category' %}
+                <select class="form-control" name="{{ field.name }}" id="{{ field.id_for_label }}">
+                    <option value="본체">본체</option>
+                    <option value="타이틀">타이틀</option>
+                    <option value="주변기기">주변기기</option>
+                    <option value="기타">기타</option>
+                </select>
                 {% else %}
                 {% if field.name == 'stock' %}
                 <input type="{{ field.field.widget.input_type }}" class="form-control" id="{{ field.id_for_label }}"

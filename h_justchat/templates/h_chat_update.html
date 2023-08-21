@@ -18,7 +18,7 @@
 {% block contents %}
 <div class="top">
     <div class="home_top">
-        <a href="../"><img id='home_img' src="{% static 'images/logo.png' %}" alt="로고 이미지"></a>
+        <a href="../../../"><img id='home_img' src="{% static 'images/logo.png' %}" alt="로고 이미지"></a>
 
         {% if request.session.user %}
         <div class="logout_align">
@@ -52,10 +52,13 @@
                 {% if field.name == 'contents' %}
                 <textarea class="form-control" name="{{ field.name }}" id="{{ field.id_for_label }}" >{{ field.value|default_if_none:''|safe }}</textarea>
                 {% elif field.name == 'category' %}
-                    <select class="form-control" id="{{ field.id_for_label }}" name="{{ field.name }}">
+                    <select class="form-control" id="{{ field.id_for_label }}" name="{{ field.name }}" > 
+                        <!-- form.category.choices로부터 선택지들을 반복하며 option 태그 생성 -->
                         <!-- form.category.choices로부터 선택지들을 반복하며 option 태그 생성 -->
                         {% for choice in field.field.choices %}
-                            <option value="{{ field.value }}">{{ field.value }}</option>
+                            <option value="{{ choice.0 }}" {% if choice.0 == field.value %}selected{% endif %}>
+                            {{ choice.1 }}
+                            </option>
                         {% endfor %}
                     </select>
                 {% else %}

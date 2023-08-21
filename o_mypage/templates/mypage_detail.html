@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block header %}
+<style>
+    .profile-div {
+        background-color: lightgray;
+        border: 2px solid black;
+        padding: 20px;
+        margin: 20px;
+        border-radius: 10px;
+        width: 100vh;
+    }
+
+    .profile-item {
+        margin-bottom: 15px;
+        display: flex;
+        align-items: center;
+    }
+
+    .profile-label {
+        font-size: 20px;
+        flex: 1;
+        font-weight: bold;
+    }
+
+    .profile-data {
+        flex: 4;
+    }
+    .profile-heading {
+        font-size: 30px;
+        margin-bottom: 20px;
+        color: darkblue;
+    }
+</style>
+{% endblock %}
+
+{% block contents %}
+<div class='body-div'>
+        <div class="profile-div">
+                <div class="profile">
+                    <h2 class="profile-heading">프로필 상세 정보</h2>
+                    {% if latest_mypage %}
+                    <div class="profile-item">
+                        <div class="profile-label">
+                            <label for="nickname">닉네임</label>
+                        </div>
+                        <div class="profile-data">
+                            <span id="nickname">{{ latest_mypage.writer.nickname|safe }}</span>
+                        </div>
+                    </div>
+                    <div class="profile-item">
+                        <div class="profile-label">
+                            <label for="age">연령대</label>
+                        </div>
+                        <div class="profile-data">
+                            <span id="age">{{ latest_mypage.age }}</span>
+                        </div>
+                    </div>
+                    <div class="profile-item">
+                        <div class="profile-label">
+                            <label for="gender">성별</label>
+                        </div>
+                        <div class="profile-data">
+                            <span id="gender">{{ latest_mypage.gender }}</span>
+                        </div>
+                    </div>
+                    <div class="profile-item">
+                        <div class="profile-label">
+                            <label for="voice">음성대화</label>
+                        </div>
+                        <div class="profile-data">
+                            <span id="voice">{{ latest_mypage.voice }}</span>
+                        </div>
+                    </div>
+                    <div class="profile-item">
+                        <div class="profile-label">
+                            <label for="introduction">자기소개</label>
+                        </div>
+                        <div class="profile-data">
+                            <span id="introduction">{{ latest_mypage.introduction }}</span>
+                        </div>
+                    </div>
+                    {% else %}
+                    <p>해당 작성자의 Mypage 정보가 없습니다.</p>
+                    {% endif %}
+                    <!-- 나머지 프로필 정보도 유사하게 작성 -->
+            </div>
+        </div>
+</div>
+{% endblock %}

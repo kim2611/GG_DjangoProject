@@ -1,14 +1,11 @@
 from django.contrib import admin
 from django.urls import path, include
 from bcuser.views import *
-#from h_justchat.views import *
-#from c_notice.views import *
-from o_mypage.views import MypageGame, MypageWrite, MypageUpdate
+from .import views
 
-urlpatterns = [    
-    path('mypage/', ),
-    path('mypage/gamelist/', MypageGame.as_view()),
-    path('mypage/writelist/', MypageWrite.as_view()),
-    path('mypage/update/', MypageUpdate.as_view()),
-    
+
+urlpatterns = [
+    path('main/', views.mypage_main, name='mypage_main'),
+    path('write/', views.mypage_write, name='mypage_write'),
+    path('detail/<int:writer_id>/', views.mypage_detail, name='mypage_detail'),
 ]

@@ -17,7 +17,7 @@
 {% block contents %}
 <div class="top">
     <div class="home_top">
-        <a href="../"><img id='home_img' src="{% static 'images/logo.png' %}" alt="로고 이미지"></a>
+        <a href="../../../"><img id='home_img' src="{% static 'images/logo.png' %}" alt="로고 이미지"></a>
 
         {% if request.session.user %}
         <div class="logout_align">
@@ -51,12 +51,14 @@
                 {% if field.name == 'contents' %}
                 <textarea class="form-control" name="{{ field.name }}" id="{{ field.id_for_label }}" value="{{ field.value|default_if_none:'' }}">{{ field.value|default_if_none:'' }}</textarea>
                 {% elif field.name == 'category' %}
-                    <select class="form-control" id="{{ field.id_for_label }}" name="{{ field.name }}">
+                    <select class="form-control" id="{{ field.id_for_label }}" name="{{ field.name }}" value="{{ field.value }}">
                         <!-- form.category.choices로부터 선택지들을 반복하며 option 태그 생성 -->
                         {% for choice in field.field.choices %}
-                            <!-- choice.0은 선택지의 실제 값, choice.1은 사용자에게 보여질 라벨 -->
-                            <option value="{{ field.value }}">{{ field.value }}</option>
+                            <option value="{{ choice.0 }}" {% if choice.0 == field.value %}selected{% endif %}>
+                            {{ choice.1 }}
+                            </option>
                         {% endfor %}
+                    {{ field.value }}
                     </select>
                 {% elif field.name == 'need'%}
                     <input type="{{ field.field.widget.input_type }}" class="form-control" id="{{ field.id_for_label }}"

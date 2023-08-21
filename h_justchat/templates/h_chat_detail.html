@@ -33,7 +33,7 @@
         <div class="card-header">
             <h5 class="card-title">[{{chat.get_h_category_display}}] {{ chat.h_title }}</h5>
             <p class="detail-date">조회수 : {{chat.h_click}} / 추천수 : {{chat.h_votes}} / 작성 일자 : {{chat.h_register_date|date:'Y-m-d H:i'}}</p>
-            <p class="detail-writer">작성자 : <a href="">{{chat.h_writer.nickname|safe}}</a></p>
+            <p class="detail-writer">작성자 : <a href="{% url 'mypage_detail' writer_id=chat.h_writer.id %}" target="_blank">{{chat.h_writer.nickname|safe}}</a></p>
             <div class="card-body">
                 <ul class="list-group list-group-flush">
                     <li class="list-group-item"><p style="font-size: 18px;">내용:</p>{{ chat.h_contents|safe }}</li>
@@ -46,8 +46,9 @@
                         {% else %}
                             <a href="{% url 'chat_board_vote' pk=chat.pk %}" class="btn btn-warning btn-vote-vote">추천하기</a>
                         {% endif %}
-                {% endif %}
                     </div>
+                {% endif %}
+                    
             </div>
         </div>
     </div>

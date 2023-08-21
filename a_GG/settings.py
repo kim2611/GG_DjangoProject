@@ -41,7 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.humanize',
     'rest_framework',
     "bcuser",
-    #"c_notice",
+    "c_notice",
     "d_event",
     "e_duo",
     "f_squad",

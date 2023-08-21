@@ -7,8 +7,8 @@ urlpatterns = [
     path('', views.board_list, name="qna_board_list" ),
     path('write/', views.board_write, name="qna_write_list"),
     path('<int:pk>/', Board_detail.as_view(), name="qna_board_detail"), 
-    path('<int:pk>/delete/',views.board_delete, name="qna_board_delete"),
-    path('<int:pk>/comment_delete/',views.comment_delete, name="qna_comment_delete"),
-    path('<int:pk>/update/',views.board_update, name="qna_board_update"),
-    path('<int:pk>/vote/',views.board_vote, name="qna_board_vote")
+    path('delete/<int:pk>/',views.board_delete, name="qna_board_delete"),
+    path('comment_delete/<int:pk>/',views.comment_delete, name="qna_comment_delete"),
+    path('update/<int:pk>/',views.board_update, name="qna_board_update"),
+    path('vote/<int:pk>/',views.board_vote, name="qna_board_vote")
     ] 
